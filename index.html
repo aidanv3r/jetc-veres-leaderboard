@@ -28,7 +28,7 @@ header p { margin: 0; opacity: 0.85; font-size: 12px; }
 .rank { font-weight: 700; min-width: 22px; }
 .arrow { font-weight: 700; min-width: 28px; font-size: 13px; }
 .arrow.up { color: var(--green); }
-.arrow.down { color: var(--navy); }
+.arrow.down { color: #d73a49; }
 .arrow.same { color: var(--muted); }
 .name { font-weight: 600; flex: 1; }
 .why { font-size: 12px; color: var(--muted); margin-top: 4px; }
@@ -57,7 +57,7 @@ header p { margin: 0; opacity: 0.85; font-size: 12px; }
   <button class="tab" data-tab="math">Math</button>
 </div>
 <div class="controls" id="controls">
-  <label><input type="checkbox" id="guests" checked> Show guests</label>
+  <label><input type="checkbox" id="guests"> Show guests</label>
   <span id="updated" style="color:var(--muted);font-size:12px;">Updated</span>
 </div>
 </div>
@@ -162,8 +162,9 @@ const singles = [
     {d:"9/26", o:"Will (practice)", s:"6-4", p:12, t:"practice", win:true},
     {d:"9/23", o:"Aidan (practice)", s:"6-3", p:12, t:"practice", win:true}
   ]},
-  {name:"Will Kuehne", prev:7, score:9.0, why:"Practice singles results", last:"10/24 W Juan 7-6", guest:false, results:[
+  {name:"Will Kuehne", prev:7, score:8.7, why:"Practice singles results", last:"10/24 W Juan 7-6", guest:false, results:[
     {d:"10/24", o:"Juan (practice)", s:"7-6 (10-6)", p:10, t:"practice", win:true},
+    {d:"9/26", o:"Juan (practice)", s:"0-6, 6-2", p:6, t:"practice", win:false},
     {d:"9/26", o:"Carlos (practice)", s:"6-4", p:6, t:"practice", win:false}
   ]},
   {name:"Aidan Veres", prev:8, score:8.4, why:"Practice singles results", last:"10/24 W Juan 6-1", guest:false, results:[
@@ -178,10 +179,11 @@ const singles = [
   ]},
   {name:"Sterling Savill", prev:10, score:7.0, why:"Limited singles data", last:"No recent singles", guest:false, results:[
   ]},
-  {name:"Juan Gomez", prev:11, score:7.8, why:"Recent practice results", last:"10/24 L Will 7-6", guest:false, results:[
+  {name:"Juan Gomez", prev:11, score:7.5, why:"Recent practice results", last:"10/24 L Will 7-6", guest:false, results:[
     {d:"10/24", o:"Will (practice)", s:"7-6 (10-6)", p:6, t:"practice", win:false},
     {d:"10/24", o:"Aidan (practice)", s:"6-1", p:4, t:"practice", win:false},
     {d:"10/10", o:"Aidan (practice)", s:"4-3", p:12, t:"practice", win:true},
+    {d:"9/26", o:"Will (practice)", s:"0-6, 6-2", p:8, t:"practice", win:true},
     {d:"9/26", o:"Justin (practice)", s:"6-1, 6-0", p:4, t:"practice", win:false}
   ]},
   {name:"Alec Bryant", prev:12, score:7.5, why:"10/3 W Adam 5-2", last:"10/3 W Adam 5-2", guest:false, results:[
@@ -233,11 +235,15 @@ const doubles = [
   {name:"Aidan Veres / Justin Legido", prev:null, score:7.8, why:"10/7 W Sterling/Jose 6-2", last:"10/7 W Sterling/Jose", guest:false, results:[
     {d:"10/7", o:"Sterling/Jose (practice)", s:"6-2", p:14, t:"practice", win:true}
   ]},
-  {name:"Aidan Veres / Will Kuehne", prev:null, score:7.5, why:"10/10 W Tyler/Juan 7-6", last:"10/10 W Tyler/Juan", guest:false, results:[
-    {d:"10/10", o:"Tyler/Juan (practice)", s:"7-6 (10-4)", p:12, t:"practice", win:true}
+  {name:"Aidan Veres / Will Kuehne", prev:null, score:9.1, why:"10/10 W Tyler/Juan 7-6", last:"10/10 W Tyler/Juan", guest:false, results:[
+    {d:"10/10", o:"Tyler/Juan (practice)", s:"7-6 (10-4)", p:12, t:"practice", win:true},
+    {d:"10/5", o:"Logan/Nick (practice)", s:"6-2, 0-6, 10-5", p:12, t:"practice", win:true}
   ]},
   {name:"Aidan Veres / Alec Bryant", prev:null, score:7.2, why:"10/3 W Adam/Jonathan 5-4", last:"10/3 W Adam/Jonathan", guest:false, results:[
     {d:"10/3", o:"Adam/Jonathan (practice)", s:"5-4", p:12, t:"practice", win:true}
+  ]},
+  {name:"Logan Roschman / Nick Velar", prev:null, score:6.0, why:"10/5 L Aidan/Will", last:"10/5 L Aidan/Will", guest:false, results:[
+    {d:"10/5", o:"Aidan/Will (practice)", s:"6-2, 0-6, 10-5", p:6, t:"practice", win:false}
   ]}
 ];
 
