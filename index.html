@@ -49,7 +49,7 @@ header p { margin: 0; opacity: 0.85; font-size: 12px; }
 <div class="sticky-header">
 <header>
   <h1>JETC / Veres</h1>
-  <p>Broward USTA 18+ 3.5 Night • Leaderboard</p>
+  <p>Broward USTA 18+ 3.5 Night • Leaderboard <span style="opacity:0.7;">v1.1</span></p>
 </header>
 <div class="tabs">
   <button class="tab active" data-tab="singles">Singles</button>
@@ -287,9 +287,21 @@ function render() {
 function openModal(p) {
   document.getElementById("modal-title").textContent = p.name;
   let html = "";
-  (p.results || []).forEach(r => {
+  const weights = [1.0, 0.9, 0.8, 0.7, 0.6, 0.5];
+  const results = p.results || [];
+  const totalW = weights.slice(0, results.length).reduce((a, b) => a + b, 0);
+  results.forEach((r, i) => {
+    const w = weights[i] || 0;
+    const contrib = totalW > 0 ? ((r.p * w) / totalW).toFixed(1) : "0.0";
     const outcome = r.win ? '<span class="win">W</span>' : '<span class="loss">L</span>';
-    html += `<div class="result">${outcome} <strong>${r.d}</strong> vs ${r.o}<br>${r.s} <span class="pts">(${r.p} pts)</span> <span style="color:#57606a">· ${r.t}</span></div>`;
+    html += `<div class="result" style="display:flex; justify-content:space-between; align-items:flex-start; gap:8px;">
+      <div>
+        ${outcome} <strong>${r.d}</strong> vs ${r.o} &nbsp; <span class="pts">${r.p} pts</span><br>
+        ${r.s} <span style="color:#57606a">· ${r.t}</span><br>
+        <span style="font-size:11px;color:#57606a;">(${r.p} × ${w}) ÷ ${totalW.toFixed(1)} = ${contrib}</span>
+      </div>
+      <div class="pts" style="text-align:right; min-width:42px; font-size:15px;">${contrib}</div>
+    </div>`;
   });
   if (!html) html = "<p>No scored results yet.</p>";
   document.getElementById("modal-body").innerHTML = html;
@@ -326,11 +338,12 @@ document.getElementById("modal").addEventListener("click", (e) => {
   if (e.target.id === "modal") closeModal();
 });
 
-// Set updated date automatically
+// Set updated date and time automatically
 const now = new Date();
 const months = ["01","02","03","04","05","06","07","08","09","10","11","12"];
 const dateStr = `${months[now.getMonth()]}/${String(now.getDate()).padStart(2,"0")}`;
-document.getElementById("updated").textContent = `Updated ${dateStr}`;
+const timeStr = now.toLocaleTimeString([], {hour: "numeric", minute: "2-digit"});
+document.getElementById("updated").textContent = `Updated ${dateStr} ${timeStr}`;
 
 render();
 </script>
