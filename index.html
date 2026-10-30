@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JETC / Veres Leaderboard</title>
+<style>
+:root { --navy: #0a2540; --green: #1a7f37; --bg: #f6f8fa; --card: #fff; --text: #1f2328; --muted: #57606a; --border: #d0d7de; }
+* { box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; margin: 0; padding: 0; background: var(--bg); color: var(--text); font-size: 14px; line-height: 1.4; }
+.sticky-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--bg);
+  padding: 10px 10px 0 10px;
+}
+header { background: var(--navy); color: #fff; padding: 14px 12px; border-radius: 10px; margin-bottom: 12px; text-align: center; }
+header h1 { margin: 0 0 2px; font-size: 18px; }
+header p { margin: 0; opacity: 0.85; font-size: 12px; }
+.tabs { display: flex; gap: 6px; margin-bottom: 10px; }
+.tab { flex: 1; padding: 10px; border: none; border-radius: 8px; background: #eaeef2; font-weight: 600; cursor: pointer; font-size: 14px; }
+.tab.active { background: var(--navy); color: #fff; }
+.controls { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; font-size: 13px; }
+.row { background: var(--card); border-radius: 10px; margin-bottom: 8px; padding: 10px 12px; box-shadow: 0 1px 2px rgba(0,0,0,0.06); cursor: pointer; }
+.row:active { background: #f0f3f6; }
+.row-header { display: flex; align-items: center; gap: 8px; }
+.rank { font-weight: 700; min-width: 22px; }
+.arrow { font-weight: 700; min-width: 28px; font-size: 13px; }
+.arrow.up { color: var(--green); }
+.arrow.down { color: var(--navy); }
+.arrow.same { color: var(--muted); }
+.name { font-weight: 600; flex: 1; }
+.why { font-size: 12px; color: var(--muted); margin-top: 4px; }
+.score { font-weight: 700; color: var(--navy); min-width: 42px; text-align: right; font-size: 13px; }
+.guest { opacity: 0.65; }
+.modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.55); z-index: 999; padding: 16px; }
+.modal-content { background: #fff; border-radius: 12px; max-width: 480px; margin: 20px auto; padding: 16px; max-height: 85vh; overflow-y: auto; }
+.modal h2 { margin: 0 0 12px; font-size: 17px; }
+.close { float: right; font-size: 22px; cursor: pointer; color: var(--muted); line-height: 1; }
+.result { padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 13px; }
+.result:last-child { border-bottom: none; }
+.win { color: var(--green); font-weight: 700; }
+.loss { color: var(--navy); font-weight: 700; }
+.pts { font-weight: 600; color: var(--green); }
+</style>
+</head>
+<body>
+<div class="sticky-header">
+<header>
+  <h1>JETC / Veres</h1>
+  <p>Broward USTA 18+ 3.5 Night • Leaderboard</p>
+</header>
+<div class="tabs">
+  <button class="tab active" data-tab="singles">Singles</button>
+  <button class="tab" data-tab="doubles">Doubles</button>
+  <button class="tab" data-tab="math">Math</button>
+</div>
+<div class="controls" id="controls">
+  <label><input type="checkbox" id="guests" checked> Show guests</label>
+  <span id="updated" style="color:var(--muted);font-size:12px;">Updated</span>
+</div>
+</div>
+<div id="list" style="padding:0 10px;"></div>
+<div id="math" style="display:none; background:var(--card); border-radius:10px; padding:16px; font-size:13.5px; line-height:1.5; margin:0 10px;">
+  <h2 style="margin-top:0; font-size:17px;">How the Score Is Calculated</h2>
+  <p>The number shown next to each player (or pairing) is a <strong>weighted average of their most recent 6 results</strong>.</p>
+
+  <h3 style="font-size:15px; margin-bottom:6px;">1. Base points for a result</h3>
+  <p><strong>Set categories</strong> (used for single sets and to classify matches):</p>
+  <ul style="margin-top:4px;">
+    <li><strong>Decisive set</strong>: 6-0, 6-1, 6-2</li>
+    <li><strong>Competitive set</strong>: 6-3, 6-4, 7-5</li>
+    <li><strong>Contested set</strong>: 7-6</li>
+  </ul>
+
+  <p><strong>Single set</strong> (practice or league):</p>
+  <ul style="margin-top:4px;">
+    <li>Decisive win → <strong>14</strong> &nbsp;|&nbsp; Decisive loss → <strong>4</strong></li>
+    <li>Competitive win → <strong>12</strong> &nbsp;|&nbsp; Competitive loss → <strong>6</strong></li>
+    <li>Contested win → <strong>10</strong> &nbsp;|&nbsp; Contested loss → <strong>8</strong></li>
+  </ul>
+
+  <p><strong>Full match</strong> (best of 3 sets):</p>
+  <ul style="margin-top:4px;">
+    <li><strong>Decisive match</strong> — won in straight sets with at least one decisive set → win <strong>16</strong> / loss <strong>4</strong></li>
+    <li><strong>Competitive match</strong> — won in straight sets with no decisive sets, or won in 3 sets with at least one decisive set → win <strong>14</strong> / loss <strong>6</strong></li>
+    <li><strong>Contested match</strong> — won in 3 sets with no decisive sets → win <strong>12</strong> / loss <strong>8</strong></li>
+  </ul>
+
+  <p><strong>Partial sets</strong> (practice only): scored by the same set cutoffs using the final game score that was reached. A 5-2 is decisive; a 5-3 or 4-3 is competitive; a 7-6 partial is contested.</p>
+  <p><strong>League multiplier</strong>: every league result is multiplied by <strong>1.5</strong> after base points are assigned. Practice results use the base value with no multiplier.</p>
+  <p><strong>Forfeit</strong>: treated as a decisive win (14 for a set, 16 for a match) for the winner and a decisive loss (4) for the loser.</p>
+
+  <h3 style="font-size:15px; margin-bottom:6px;">2. Recency weighting (most recent 6 only)</h3>
+  <p>Only the 6 newest results for that player or pairing are used. Older results drop out of the calculation entirely.</p>
+  <p>Position weights (newest → oldest):</p>
+  <ul style="margin-top:4px;">
+    <li>Most recent result: 1.0</li>
+    <li>2nd most recent: 0.9</li>
+    <li>3rd: 0.8</li>
+    <li>4th: 0.7</li>
+    <li>5th: 0.6</li>
+    <li>6th (oldest in the window): 0.5</li>
+  </ul>
+  <p><strong>Time decay</strong>: if a result is more than 8 weeks old, its position weight is multiplied by an additional <strong>0.85</strong>. Results 8 weeks old or newer receive no extra decay.</p>
+  <p>Final weight for any result = position weight × time decay.</p>
+
+  <h3 style="font-size:15px; margin-bottom:6px;">3. Final score</h3>
+  <p>For each of the (up to) 6 results:</p>
+  <ol style="margin-top:4px;">
+    <li>Assign base points from the outcome definitions above.</li>
+    <li>Apply the league multiplier (×1.5) if it is a league match.</li>
+    <li>Multiply by the final weight (position weight × time decay).</li>
+  </ol>
+  <p><strong>Score = Σ (points × final weight) ÷ Σ (final weight)</strong></p>
+  <p>Players and pairings are ranked by this score, highest first. If a player or pairing has fewer than 6 results, the average is taken over the results that exist (using the same position weights starting from the newest). Frequency of play does not add points — only the quality and recency of the results that do exist.</p>
+
+  <h3 style="font-size:15px; margin-bottom:6px;">4. Movement arrows</h3>
+  <p>Green ↑ or navy ↓ compares the current rank to the rank stored at the last update.</p>
+</div>
+<div id="modal" class="modal">
+  <div class="modal-content">
+    <span class="close" id="close">&times;</span>
+    <h2 id="modal-title"></h2>
+    <div id="modal-body"></div>
+  </div>
+</div>
+<script>
+const singles = [
+  {name:"Logan Roschman", prev:3, score:18.6, why:"10/28 L Alves 6-7 7-6 1-0", last:"10/28 L Alves 6-7 7-6 1-0", guest:false, results:[
+    {d:"10/28", o:"Leandro Alves (league)", s:"6-7, 7-6, 1-0", p:12, t:"league", win:false},
+    {d:"10/21", o:"Ryan Lewitt (league)", s:"6-3, 6-3", p:21, t:"league", win:true},
+    {d:"10/14", o:"Oliver Matheus (league)", s:"6-2, 6-3", p:24, t:"league", win:true}
+  ]},
+  {name:"Jonathan Jaffe", prev:4, score:14.4, why:"10/28 L Levine 0-6 4-6", last:"10/28 L Levine 0-6 4-6", guest:false, results:[
+    {d:"10/28", o:"Charlie Levine (league)", s:"0-6, 4-6", p:6, t:"league", win:false},
+    {d:"10/21", o:"Gonzalo García (league)", s:"6-4, 6-1", p:24, t:"league", win:true},
+    {d:"10/14", o:"Andres Rojas (league)", s:"6-4, 7-6", p:21, t:"league", win:true},
+    {d:"10/3", o:"Aidan (practice)", s:"6-1", p:14, t:"practice", win:true},
+    {d:"10/3", o:"Justin (practice)", s:"7-5", p:6, t:"practice", win:false}
+  ]},
+  {name:"Justin Legido", prev:1, score:12.4, why:"Recent practice wins", last:"10/28 L Levine/Baseman", guest:false, results:[
+    {d:"10/24", o:"Aidan (practice)", s:"6-4", p:12, t:"practice", win:true},
+    {d:"10/3", o:"Jonathan (practice)", s:"7-5", p:12, t:"practice", win:true},
+    {d:"10/3", o:"Tyler (practice)", s:"3-2 forfeit", p:14, t:"practice", win:true},
+    {d:"9/26", o:"Carlos (practice)", s:"6-4", p:12, t:"practice", win:true},
+    {d:"9/26", o:"Juan (practice)", s:"6-1, 6-0", p:14, t:"practice", win:true}
+  ]},
+  {name:"Tyler Crowe", prev:2, score:10.5, why:"Guest", last:"10/10 W Kevin 6-4", guest:true, results:[
+    {d:"10/10", o:"Kevin (practice)", s:"6-4", p:12, t:"practice", win:true},
+    {d:"10/3", o:"Justin (practice)", s:"3-2 forfeit", p:4, t:"practice", win:false}
+  ]},
+  {name:"Kevin Rodengen", prev:5, score:9.8, why:"Practice results", last:"10/10 L Tyler 6-4", guest:false, results:[
+    {d:"10/10", o:"Tyler (practice)", s:"6-4", p:6, t:"practice", win:false},
+    {d:"9/23", o:"Parker (practice)", s:"6-1", p:14, t:"practice", win:true},
+    {d:"9/23", o:"Carlos (practice)", s:"6-3", p:12, t:"practice", win:true}
+  ]},
+  {name:"Carlos Gomez", prev:6, score:9.5, why:"10/28 W Brownstein/Shelton 7-6 7-6", last:"10/28 W Brownstein/Shelton", guest:false, results:[
+    {d:"10/28", o:"Brownstein/Shelton (league D3)", s:"7-6, 7-6", p:12, t:"league", win:true},
+    {d:"10/3", o:"Patrick (practice)", s:"6-0", p:14, t:"practice", win:true},
+    {d:"9/29", o:"Nick (practice)", s:"7-5, 6-4", p:12, t:"practice", win:true},
+    {d:"9/26", o:"Will (practice)", s:"6-4", p:12, t:"practice", win:true},
+    {d:"9/23", o:"Aidan (practice)", s:"6-3", p:12, t:"practice", win:true}
+  ]},
+  {name:"Will Kuehne", prev:7, score:9.2, why:"10/21 W Alonso/Ely", last:"10/21 W Alonso/Ely", guest:false, results:[
+    {d:"10/24", o:"Juan (practice)", s:"7-6 (10-6)", p:12, t:"practice", win:true},
+    {d:"10/21", o:"Alonso/Ely (league)", s:"6-3, 6-7, 1-0", p:10, t:"league", win:true},
+    {d:"9/26", o:"Carlos (practice)", s:"6-4", p:6, t:"practice", win:false}
+  ]},
+  {name:"Aidan Veres", prev:8, score:9.0, why:"10/28 W Brownstein/Shelton 7-6 7-6", last:"10/28 W Brownstein/Shelton", guest:false, results:[
+    {d:"10/28", o:"Brownstein/Shelton (league D3)", s:"7-6, 7-6", p:12, t:"league", win:true},
+    {d:"10/24", o:"Juan (practice)", s:"6-1", p:14, t:"practice", win:true},
+    {d:"10/24", o:"Justin (practice)", s:"6-4", p:6, t:"practice", win:false},
+    {d:"10/10", o:"Juan (practice)", s:"4-3", p:6, t:"practice", win:false},
+    {d:"10/7", o:"Jose (practice)", s:"6-2", p:14, t:"practice", win:true},
+    {d:"10/3", o:"Jonathan (practice)", s:"6-1", p:4, t:"practice", win:false}
+  ]},
+  {name:"Nick Velar", prev:9, score:8.7, why:"League doubles wins", last:"10/28 W Ma/Escallon", guest:false, results:[
+    {d:"10/28", o:"Ma/Escallon (league)", s:"6-4, 4-6, 1-0", p:10, t:"league", win:true},
+    {d:"10/21", o:"Mazuera/Vilchez (league)", s:"6-0, 6-4", p:14, t:"league", win:true},
+    {d:"10/14", o:"Sanabria/Ugerman (league)", s:"6-2, 6-2", p:14, t:"league", win:true},
+    {d:"9/29", o:"Carlos (practice)", s:"7-5, 6-4", p:6, t:"practice", win:false}
+  ]},
+  {name:"Sterling Savill", prev:10, score:8.3, why:"10/28 L Levine/Baseman 4-6 1-6", last:"10/28 L Levine/Baseman", guest:false, results:[
+    {d:"10/28", o:"Levine/Baseman (league)", s:"4-6, 1-6", p:4, t:"league", win:false},
+    {d:"10/7", o:"Will/Justin (practice)", s:"7-6 (10-5)", p:12, t:"practice", win:true}
+  ]},
+  {name:"Juan Gomez", prev:11, score:7.8, why:"Recent practice results", last:"10/24 L Will 7-6", guest:false, results:[
+    {d:"10/24", o:"Will (practice)", s:"7-6 (10-6)", p:6, t:"practice", win:false},
+    {d:"10/24", o:"Aidan (practice)", s:"6-1", p:4, t:"practice", win:false},
+    {d:"10/10", o:"Aidan (practice)", s:"4-3", p:12, t:"practice", win:true},
+    {d:"9/26", o:"Justin (practice)", s:"6-1, 6-0", p:4, t:"practice", win:false}
+  ]},
+  {name:"Alec Bryant", prev:12, score:7.5, why:"10/3 W Adam 5-2", last:"10/3 W Adam 5-2", guest:false, results:[
+    {d:"10/3", o:"Adam (practice)", s:"5-2", p:12, t:"practice", win:true}
+  ]},
+  {name:"Michael Adler", prev:13, score:7.2, why:"League doubles wins", last:"10/28 W Ma/Escallon", guest:false, results:[
+    {d:"10/28", o:"Ma/Escallon (league)", s:"6-4, 4-6, 1-0", p:10, t:"league", win:true},
+    {d:"10/21", o:"Mazuera/Vilchez (league)", s:"6-0, 6-4", p:14, t:"league", win:true},
+    {d:"10/14", o:"Sanabria/Ugerman (league)", s:"6-2, 6-2", p:14, t:"league", win:true}
+  ]},
+  {name:"Patrick Rubenstein", prev:14, score:6.8, why:"Recent results", last:"10/21 L Irizarry/Ardila", guest:false, results:[
+    {d:"10/21", o:"Irizarry/Ardila (league)", s:"1-6, 0-6", p:4, t:"league", win:false},
+    {d:"10/14", o:"Kaine/Sutker (league)", s:"1-6, 6-0, 1-0", p:6, t:"league", win:false},
+    {d:"10/3", o:"Carlos (practice)", s:"6-0", p:4, t:"practice", win:false}
+  ]},
+  {name:"Adam D'Anna", prev:15, score:6.5, why:"10/3 L Alec 5-2", last:"10/3 L Alec 5-2", guest:false, results:[
+    {d:"10/3", o:"Alec (practice)", s:"5-2", p:4, t:"practice", win:false}
+  ]},
+  {name:"Parker Long", prev:16, score:6.2, why:"Recent results", last:"10/21 L Irizarry/Ardila", guest:false, results:[
+    {d:"10/21", o:"Irizarry/Ardila (league)", s:"1-6, 0-6", p:4, t:"league", win:false},
+    {d:"9/23", o:"Kevin (practice)", s:"6-1", p:4, t:"practice", win:false},
+    {d:"9/23", o:"Aidan (practice)", s:"6-1", p:4, t:"practice", win:false}
+  ]},
+  {name:"Jose (guest)", prev:null, score:5.5, why:"Guest", last:"10/7 L Aidan 6-2", guest:true, results:[
+    {d:"10/7", o:"Aidan (practice)", s:"6-2", p:4, t:"practice", win:false}
+  ]}
+];
+
+const doubles = [
+  {name:"Nick Velar / Michael Adler", prev:1, score:19.1, why:"League doubles wins", last:"10/28 W Ma/Escallon", guest:false, results:[
+    {d:"10/28", o:"Ma/Escallon (league)", s:"6-4, 4-6, 1-0", p:15, t:"league", win:true},
+    {d:"10/21", o:"Mazuera/Vilchez (league)", s:"6-0, 6-4", p:24, t:"league", win:true},
+    {d:"10/14", o:"Sanabria/Ugerman (league)", s:"6-2, 6-2", p:24, t:"league", win:true}
+  ]},
+  {name:"Aidan Veres / Carlos Gomez", prev:3, score:11.5, why:"10/28 W Brownstein/Shelton 7-6 7-6", last:"10/28 W Brownstein/Shelton", guest:false, results:[
+    {d:"10/28", o:"Brownstein/Shelton (league)", s:"7-6, 7-6", p:12, t:"league", win:true}
+  ]},
+  {name:"Will Kuehne / Justin Legido", prev:2, score:11.0, why:"10/21 W Alonso/Ely", last:"10/21 W Alonso/Ely", guest:false, results:[
+    {d:"10/21", o:"Alonso/Ely (league)", s:"6-3, 6-7, 1-0 (TB 10-2)", p:10, t:"league", win:true},
+    {d:"9/26", o:"Carlos/Juan (practice)", s:"6-2", p:14, t:"practice", win:true}
+  ]},
+  {name:"Justin Legido / Sterling Savill", prev:4, score:7.8, why:"10/28 L Levine/Baseman 4-6 1-6", last:"10/28 L Levine/Baseman", guest:false, results:[
+    {d:"10/28", o:"Levine/Baseman (league)", s:"4-6, 1-6", p:4, t:"league", win:false}
+  ]},
+  {name:"Carlos Gomez / Patrick Rubenstein", prev:5, score:7.5, why:"10/14 L Kaine/Sutker", last:"10/14 L Kaine/Sutker", guest:false, results:[
+    {d:"10/14", o:"Kaine/Sutker (league)", s:"1-6, 6-0, 1-0", p:6, t:"league", win:false},
+    {d:"10/3", o:"Tyler/Justin (practice)", s:"6-4", p:12, t:"practice", win:true}
+  ]},
+  {name:"Sterling Savill / Juan Gomez", prev:6, score:7.2, why:"10/14 W Hernandez/Homes", last:"10/14 W Hernandez/Homes", guest:false, results:[
+    {d:"10/14", o:"Hernandez/Homes (league)", s:"6-2, 5-7, 1-0", p:10, t:"league", win:true}
+  ]},
+  {name:"Nick Velar / Sterling Savill", prev:null, score:8.0, why:"10/7 W Will/Justin 7-6", last:"10/7 W Will/Justin", guest:false, results:[
+    {d:"10/7", o:"Will/Justin (practice)", s:"7-6 (10-5)", p:12, t:"practice", win:true}
+  ]},
+  {name:"Aidan Veres / Justin Legido", prev:null, score:7.8, why:"10/7 W Sterling/Jose 6-2", last:"10/7 W Sterling/Jose", guest:false, results:[
+    {d:"10/7", o:"Sterling/Jose (practice)", s:"6-2", p:14, t:"practice", win:true}
+  ]},
+  {name:"Aidan Veres / Will Kuehne", prev:null, score:7.5, why:"10/10 W Tyler/Juan 7-6", last:"10/10 W Tyler/Juan", guest:false, results:[
+    {d:"10/10", o:"Tyler/Juan (practice)", s:"7-6 (10-4)", p:12, t:"practice", win:true}
+  ]},
+  {name:"Aidan Veres / Alec Bryant", prev:null, score:7.2, why:"10/3 W Adam/Jonathan 5-4", last:"10/3 W Adam/Jonathan", guest:false, results:[
+    {d:"10/3", o:"Adam/Jonathan (practice)", s:"5-4", p:12, t:"practice", win:true}
+  ]}
+];
+
+let currentTab = "singles";
+
+function getData() {
+  const showGuests = document.getElementById("guests").checked;
+  const src = currentTab === "singles" ? singles : doubles;
+  return src.filter(p => showGuests || !p.guest).sort((a,b) => b.score - a.score);
+}
+
+function render() {
+  const data = getData();
+  const list = document.getElementById("list");
+  list.innerHTML = "";
+  data.forEach((p, i) => {
+    const rank = i + 1;
+    let arrow = "—", cls = "same";
+    if (p.prev != null) {
+      const d = p.prev - rank;
+      if (d > 0) { arrow = "↑" + d; cls = "up"; }
+      else if (d < 0) { arrow = "↓" + Math.abs(d); cls = "down"; }
+    }
+    const div = document.createElement("div");
+    div.className = "row" + (p.guest ? " guest" : "");
+    div.innerHTML = `
+      <div class="row-header">
+        <span class="rank">${rank}</span>
+        <span class="arrow ${cls}">${arrow}</span>
+        <span class="name">${p.name}</span>
+        <span class="score">${p.score.toFixed(1)}</span>
+      </div>
+      <div class="why">${p.why}</div>
+      <div class="meta">${p.last}</div>
+    `;
+    div.addEventListener("click", () => openModal(p));
+    list.appendChild(div);
+  });
+}
+
+function openModal(p) {
+  document.getElementById("modal-title").textContent = p.name;
+  let html = "";
+  (p.results || []).forEach(r => {
+    const outcome = r.win ? '<span class="win">W</span>' : '<span class="loss">L</span>';
+    html += `<div class="result">${outcome} <strong>${r.d}</strong> vs ${r.o}<br>${r.s} <span class="pts">(${r.p} pts)</span> <span style="color:#57606a">· ${r.t}</span></div>`;
+  });
+  if (!html) html = "<p>No scored results yet.</p>";
+  document.getElementById("modal-body").innerHTML = html;
+  document.getElementById("modal").style.display = "block";
+}
+
+function closeModal() {
+  document.getElementById("modal").style.display = "none";
+}
+
+document.querySelectorAll(".tab").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".tab").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    currentTab = btn.dataset.tab;
+    const list = document.getElementById("list");
+    const math = document.getElementById("math");
+    const controls = document.getElementById("controls");
+    if (currentTab === "math") {
+      list.style.display = "none";
+      math.style.display = "block";
+      controls.style.display = "none";
+    } else {
+      list.style.display = "block";
+      math.style.display = "none";
+      controls.style.display = "flex";
+      render();
+    }
+  });
+});
+document.getElementById("guests").addEventListener("change", render);
+document.getElementById("close").addEventListener("click", closeModal);
+document.getElementById("modal").addEventListener("click", (e) => {
+  if (e.target.id === "modal") closeModal();
+});
+
+// Set updated date automatically
+const now = new Date();
+const months = ["01","02","03","04","05","06","07","08","09","10","11","12"];
+const dateStr = `${months[now.getMonth()]}/${String(now.getDate()).padStart(2,"0")}`;
+document.getElementById("updated").textContent = `Updated ${dateStr}`;
+
+render();
+</script>
+</body>
+</html>
