@@ -41,7 +41,7 @@ header p { margin: 0; opacity: 0.85; font-size: 12px; }
 .result { padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 13px; }
 .result:last-child { border-bottom: none; }
 .win { color: var(--green); font-weight: 700; }
-.loss { color: var(--navy); font-weight: 700; }
+.loss { color: #d73a49; font-weight: 700; }
 .pts { font-weight: 600; color: var(--green); }
 </style>
 </head>
@@ -49,7 +49,7 @@ header p { margin: 0; opacity: 0.85; font-size: 12px; }
 <div class="sticky-header">
 <header>
   <h1>JETC / Veres</h1>
-  <p>Broward USTA 18+ 3.5 Night • Leaderboard <span style="opacity:0.7;">v1.2</span></p>
+  <p>Broward USTA 18+ 3.5 Night • Leaderboard <span style="opacity:0.7;">v1.3</span></p>
 </header>
 <div class="tabs">
   <button class="tab active" data-tab="singles">Singles</button>
@@ -58,7 +58,7 @@ header p { margin: 0; opacity: 0.85; font-size: 12px; }
 </div>
 <div class="controls" id="controls">
   <label><input type="checkbox" id="guests"> Show guests</label>
-  <span id="updated" style="color:var(--muted);font-size:12px;">Updated 10/30 2:21 PM</span>
+  <span id="updated" style="color:var(--muted);font-size:12px;">Updated 10/30 3:21 PM</span>
 </div>
 </div>
 <div id="list" style="padding:0 10px;"></div>
@@ -244,6 +244,15 @@ const doubles = [
   ]},
   {name:"Logan Roschman / Nick Velar", prev:null, score:6.0, why:"10/5 L Aidan/Will", last:"10/5 L Aidan/Will", guest:false, results:[
     {d:"10/5", o:"Aidan/Will (practice)", s:"6-2, 0-6, 10-5", p:6, t:"practice", win:false}
+  ]},
+  {name:"Tyler Crowe / Juan Gomez", prev:null, score:6.0, why:"Guest", last:"10/10 L Aidan/Will 7-6", guest:true, results:[
+    {d:"10/10", o:"Aidan/Will (practice)", s:"7-6 (10-4)", p:6, t:"practice", win:false}
+  ]},
+  {name:"Tyler Crowe / Justin Legido", prev:null, score:6.0, why:"Guest", last:"10/3 L Patrick/Carlos 6-4", guest:true, results:[
+    {d:"10/3", o:"Patrick/Carlos (practice)", s:"6-4", p:6, t:"practice", win:false}
+  ]},
+  {name:"Sterling Savill / Jose (guest)", prev:null, score:4.0, why:"Guest", last:"10/7 L Aidan/Justin 6-2", guest:true, results:[
+    {d:"10/7", o:"Aidan/Justin (practice)", s:"6-2", p:4, t:"practice", win:false}
   ]}
 ];
 
@@ -345,7 +354,7 @@ document.getElementById("modal").addEventListener("click", (e) => {
 });
 
 // Timestamp is set at generation time and does not update on page refresh
-document.getElementById("updated").textContent = "Updated 10/30 2:21 PM";
+document.getElementById("updated").textContent = "Updated 10/30 3:21 PM";
 
 render();
 </script>
