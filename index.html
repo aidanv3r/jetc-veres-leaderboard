@@ -57,7 +57,7 @@ header p { margin: 0; opacity: 0.85; font-size: 12px; }
 <div class="sticky-header">
 <header>
   <h1>JETC / Veres</h1>
-  <p>Broward USTA 18+ 3.5 Night • Leaderboard <span style="opacity:0.7;">v2.2</span></p>
+  <p>Broward USTA 18+ 3.5 Night • Leaderboard <span style="opacity:0.7;">v2.3</span></p>
 </header>
 <div class="tabs">
   <button class="tab active" data-tab="singles">Singles</button>
@@ -74,7 +74,7 @@ header p { margin: 0; opacity: 0.85; font-size: 12px; }
 </div>
 <div class="controls" id="controls">
   <label><input type="checkbox" id="guests"> Show guests</label>
-  <span id="updated" style="color:var(--muted);font-size:12px;">Updated 10/30 10:51 PM</span>
+  <span id="updated" style="color:var(--muted);font-size:12px;">Updated 10/31 10:47 AM</span>
 </div>
 </div>
 <div id="list" style="padding:12px 10px 0 10px;"></div>
@@ -104,19 +104,27 @@ header p { margin: 0; opacity: 0.85; font-size: 12px; }
     <p><strong>Partial sets</strong> (practice only): scored by the same set cutoffs using the final game score that was reached. A 5-2 is decisive; a 5-3 or 4-3 is competitive; a 7-6 partial is contested.</p>
     <p><strong>League multiplier</strong>: every league result is multiplied by <strong>1.5</strong> after base points are assigned. Practice results use the base value with no multiplier.</p>
     <p><strong>Forfeit</strong>: treated as a decisive win (14 for a set, 16 for a match) for the winner and a decisive loss (4) for the loser.</p>
-    <h3 style="font-size:15px; margin-bottom:6px;">2. Recency weighting (most recent 6 only)</h3>
-    <p>Only the 6 newest results for that player or pairing are used. Older results drop out of the calculation entirely.</p>
+    <h3 style="font-size:15px; margin-bottom:6px;">2. Recency weighting (most recent 10 only)</h3>
+    <p>Only the 10 newest results for that player or pairing are used. Older results drop out of the calculation entirely.</p>
     <p>Position weights (newest → oldest):</p>
     <ul style="margin-top:4px;">
       <li>Most recent result: 1.0</li>
-      <li>2nd most recent: 0.9</li>
-      <li>3rd: 0.8</li>
-      <li>4th: 0.7</li>
-      <li>5th: 0.6</li>
-      <li>6th (oldest in the window): 0.5</li>
+      <li>2nd: 0.95</li>
+      <li>3rd: 0.90</li>
+      <li>4th: 0.85</li>
+      <li>5th: 0.80</li>
+      <li>6th: 0.75</li>
+      <li>7th: 0.70</li>
+      <li>8th: 0.65</li>
+      <li>9th: 0.60</li>
+      <li>10th (oldest in the window): 0.55</li>
     </ul>
     <p><strong>Time decay</strong>: if a result is more than 8 weeks old, its position weight is multiplied by an additional <strong>0.85</strong>. Results 8 weeks old or newer receive no extra decay.</p>
     <p>Final weight for any result = position weight × time decay.</p>
+    <h3 style="font-size:15px; margin-bottom:6px;">3. Opponent strength (practice only)</h3>
+    <p>For practice results, points are adjusted by opponent strength using a <strong>0.15 coefficient</strong>:</p>
+    <p style="font-family:monospace; font-size:12px; background:#f6f8fa; padding:8px; border-radius:6px;">multiplier = 1 + 0.15 × (opponent score − player score) / 10</p>
+    <p>The multiplier applies to both wins and losses. League results do not receive an opponent multiplier — they use base points × 1.5 only. On the Doubles boards, opponent strength uses the opposing pairing’s score.</p>
     <h3 style="font-size:15px; margin-bottom:6px;">3. Final score</h3>
     <p>For each of the (up to) 6 results:</p>
     <ol style="margin-top:4px;">
@@ -146,19 +154,20 @@ header p { margin: 0; opacity: 0.85; font-size: 12px; }
 </div>
 <script>
 const singles = [
-  {name:"Logan Roschman", prev:3, score:18.6, why:"10/28 L Alves 6-7 7-6 1-0", last:"10/28 L Alves 6-7 7-6 1-0", guest:false, results:[
+  {name:"Logan Roschman", prev:3, score:18.8, why:"10/28 L Alves 6-7 7-6 1-0", last:"10/28 L Alves 6-7 7-6 1-0", guest:false, results:[
     {d:"10/28", o:"Leandro Alves (league)", s:"6-7, 7-6, 1-0", p:12, t:"league", win:false},
     {d:"10/21", o:"Ryan Lewitt (league)", s:"6-3, 6-3", p:21, t:"league", win:true},
     {d:"10/14", o:"Oliver Matheus (league)", s:"6-2, 6-3", p:24, t:"league", win:true}
   ]},
-  {name:"Jonathan Jaffe", prev:4, score:14.5, why:"10/28 L Levine 0-6 4-6", last:"10/28 L Levine 0-6 4-6", guest:false, results:[
+  {name:"Jonathan Jaffe", prev:4, score:15.5, why:"10/28 L Levine 0-6 4-6", last:"10/28 L Levine 0-6 4-6", guest:false, results:[
     {d:"10/28", o:"Charlie Levine (league)", s:"0-6, 4-6", p:6, t:"league", win:false},
     {d:"10/21", o:"Gonzalo García (league)", s:"6-4, 6-1", p:24, t:"league", win:true},
     {d:"10/14", o:"Andres Rojas (league)", s:"6-4, 7-6", p:21, t:"league", win:true},
     {d:"10/3", o:"Aidan (practice)", s:"6-1", p:14, t:"practice", win:true},
     {d:"10/3", o:"Justin (practice)", s:"7-5", p:6, t:"practice", win:false}
   ]},
-  {name:"Justin Legido", prev:1, score:12.7, why:"Recent practice wins", last:"10/28 L Levine/Baseman", guest:false, results:[
+  {name:"Justin Legido", prev:1, score:13.1, why:"Recent practice wins", last:"10/31 W Aidan 6-2 6-2", guest:false, results:[
+    {d:"10/31", o:"Aidan (practice)", s:"6-2, 6-2", p:16, t:"practice", win:true},
     {d:"10/24", o:"Aidan (practice)", s:"6-4", p:12, t:"practice", win:true},
     {d:"10/3", o:"Jonathan (practice)", s:"7-5", p:12, t:"practice", win:true},
     {d:"10/3", o:"Tyler (practice)", s:"3-2 forfeit", p:14, t:"practice", win:true},
@@ -185,7 +194,8 @@ const singles = [
     {d:"9/26", o:"Juan (practice)", s:"0-6, 6-2", p:6, t:"practice", win:false},
     {d:"9/26", o:"Carlos (practice)", s:"6-4", p:6, t:"practice", win:false}
   ]},
-  {name:"Aidan Veres", prev:8, score:9.1, why:"Practice singles results", last:"10/24 W Juan 6-1", guest:false, results:[
+  {name:"Aidan Veres", prev:8, score:12.6, why:"Practice singles results", last:"10/31 L Justin 6-2 6-2", guest:false, results:[
+    {d:"10/31", o:"Justin (practice)", s:"6-2, 6-2", p:4, t:"practice", win:false},
     {d:"10/24", o:"Juan (practice)", s:"6-1", p:14, t:"practice", win:true},
     {d:"10/24", o:"Justin (practice)", s:"6-4", p:6, t:"practice", win:false},
     {d:"10/10", o:"Juan (practice)", s:"4-3", p:6, t:"practice", win:false},
@@ -225,7 +235,7 @@ const singles = [
 ];
 
 const doubles = [
-  {name:"Nick Velar / Michael Adler", prev:1, score:20.7, why:"League doubles wins", last:"10/28 W Ma/Escallon", guest:false, results:[
+  {name:"Nick Velar / Michael Adler", prev:1, score:20.8, why:"League doubles wins", last:"10/28 W Ma/Escallon", guest:false, results:[
     {d:"10/28", o:"Ma/Escallon (league)", s:"6-4, 4-6, 1-0", p:15, t:"league", win:true},
     {d:"10/21", o:"Mazuera/Vilchez (league)", s:"6-0, 6-4", p:24, t:"league", win:true},
     {d:"10/14", o:"Sanabria/Ugerman (league)", s:"6-2, 6-2", p:24, t:"league", win:true}
@@ -233,7 +243,7 @@ const doubles = [
   {name:"Aidan Veres / Carlos Gomez", prev:3, score:12.0, why:"10/28 W Brownstein/Shelton 7-6 7-6", last:"10/28 W Brownstein/Shelton", guest:false, results:[
     {d:"10/28", o:"Brownstein/Shelton (league)", s:"7-6, 7-6", p:12, t:"league", win:true}
   ]},
-  {name:"Will Kuehne / Justin Legido", prev:2, score:11.9, why:"10/21 W Alonso/Ely", last:"10/21 W Alonso/Ely", guest:false, results:[
+  {name:"Will Kuehne / Justin Legido", prev:2, score:11.0, why:"10/21 W Alonso/Ely", last:"10/21 W Alonso/Ely", guest:false, results:[
     {d:"10/21", o:"Alonso/Ely (league)", s:"6-3, 6-7, 1-0 (TB 10-2)", p:10, t:"league", win:true},
     {d:"9/26", o:"Carlos/Juan (practice)", s:"6-2", p:14, t:"practice", win:true}
   ]},
@@ -253,7 +263,7 @@ const doubles = [
   {name:"Aidan Veres / Justin Legido", prev:null, score:7.8, why:"10/7 W Sterling/Jose 6-2", last:"10/7 W Sterling/Jose", guest:false, results:[
     {d:"10/7", o:"Sterling/Jose (practice)", s:"6-2", p:14, t:"practice", win:true}
   ]},
-  {name:"Aidan Veres / Will Kuehne", prev:null, score:12.0, why:"10/10 W Tyler/Juan 7-6", last:"10/10 W Tyler/Juan", guest:false, results:[
+  {name:"Aidan Veres / Will Kuehne", prev:null, score:11.6, why:"10/10 W Tyler/Juan 7-6", last:"10/10 W Tyler/Juan", guest:false, results:[
     {d:"10/10", o:"Tyler/Juan (practice)", s:"7-6 (10-4)", p:12, t:"practice", win:true},
     {d:"10/5", o:"Logan/Nick (practice)", s:"6-2, 0-6, 10-5", p:12, t:"practice", win:true}
   ]},
@@ -275,26 +285,26 @@ const doubles = [
 ];
 
 const indivDoubles = [
-  {name:"Michael Adler", prev:null, score:10.9, why:"Strong with Nick", last:"10/28 W", guest:false, results:[
+  {name:"Michael Adler", prev:null, score:20.8, why:"Strong with Nick", last:"10/28 W", guest:false, results:[
     {d:"10/28", o:"w/ Nick vs Ma/Escallon", s:"6-4, 4-6, 1-0", p:15, t:"league", win:true},
     {d:"10/21", o:"w/ Nick vs Mazuera/Vilchez", s:"6-0, 6-4", p:24, t:"league", win:true},
     {d:"10/14", o:"w/ Nick vs Sanabria/Ugerman", s:"6-2, 6-2", p:24, t:"league", win:true}
   ]},
-  {name:"Nick Velar", prev:null, score:7.1, why:"Multiple wins", last:"10/28 W", guest:false, results:[
+  {name:"Nick Velar", prev:null, score:18.4, why:"Multiple wins", last:"10/28 W", guest:false, results:[
     {d:"10/28", o:"w/ Mike vs Ma/Escallon", s:"6-4, 4-6, 1-0", p:15, t:"league", win:true},
     {d:"10/21", o:"w/ Mike vs Mazuera/Vilchez", s:"6-0, 6-4", p:24, t:"league", win:true},
     {d:"10/14", o:"w/ Mike vs Sanabria/Ugerman", s:"6-2, 6-2", p:24, t:"league", win:true},
     {d:"10/7", o:"w/ Sterling vs Will/Justin", s:"7-6", p:10, t:"practice", win:true},
     {d:"10/5", o:"w/ Logan vs Aidan/Will", s:"6-2, 0-6, 10-5", p:6, t:"practice", win:false}
   ]},
-  {name:"Aidan Veres", prev:null, score:6.3, why:"Several pairings", last:"10/28 W", guest:false, results:[
+  {name:"Aidan Veres", prev:null, score:12.0, why:"Several pairings", last:"10/28 W", guest:false, results:[
     {d:"10/28", o:"w/ Carlos vs Brownstein/Shelton", s:"7-6, 7-6", p:12, t:"league", win:true},
     {d:"10/10", o:"w/ Will vs Tyler/Juan", s:"7-6", p:12, t:"practice", win:true},
     {d:"10/7", o:"w/ Justin vs Sterling/Jose", s:"6-2", p:14, t:"practice", win:true},
     {d:"10/5", o:"w/ Will vs Logan/Nick", s:"6-2, 0-6, 10-5", p:12, t:"practice", win:true},
     {d:"10/3", o:"w/ Alec vs Adam/Jonathan", s:"5-4", p:12, t:"practice", win:true}
   ]},
-  {name:"Will Kuehne", prev:null, score:6.1, why:"Mixed", last:"10/21 W", guest:false, results:[
+  {name:"Will Kuehne", prev:null, score:11.5, why:"Mixed", last:"10/21 W", guest:false, results:[
     {d:"10/21", o:"w/ Justin vs Alonso/Ely", s:"6-3, 6-7, 1-0", p:10, t:"league", win:true},
     {d:"10/10", o:"w/ Aidan vs Tyler/Juan", s:"7-6", p:12, t:"practice", win:true},
     {d:"10/5", o:"w/ Aidan vs Logan/Nick", s:"6-2, 0-6, 10-5", p:12, t:"practice", win:true},
@@ -303,7 +313,7 @@ const indivDoubles = [
   {name:"Alec Bryant", prev:null, score:6.0, why:"Single result", last:"10/3 W", guest:false, results:[
     {d:"10/3", o:"w/ Aidan vs Adam/Jonathan", s:"5-4", p:12, t:"practice", win:true}
   ]},
-  {name:"Justin Legido", prev:null, score:5.0, why:"Variable", last:"10/28 L", guest:false, results:[
+  {name:"Justin Legido", prev:null, score:10.0, why:"Variable", last:"10/28 L", guest:false, results:[
     {d:"10/28", o:"w/ Sterling vs Levine/Baseman", s:"4-6, 1-6", p:4, t:"league", win:false},
     {d:"10/21", o:"w/ Will vs Alonso/Ely", s:"6-3, 6-7, 1-0", p:10, t:"league", win:true},
     {d:"10/7", o:"w/ Aidan vs Sterling/Jose", s:"6-2", p:14, t:"practice", win:true},
@@ -318,7 +328,7 @@ const indivDoubles = [
     {d:"10/28", o:"w/ Aidan vs Brownstein/Shelton", s:"7-6, 7-6", p:12, t:"league", win:true},
     {d:"10/14", o:"w/ Patrick vs Kaine/Sutker", s:"1-6, 6-0, 1-0", p:6, t:"league", win:false}
   ]},
-  {name:"Sterling Savill", prev:null, score:3.6, why:"Variable", last:"10/28 L", guest:false, results:[
+  {name:"Sterling Savill", prev:null, score:8.6, why:"Variable", last:"10/28 L", guest:false, results:[
     {d:"10/28", o:"w/ Justin vs Levine/Baseman", s:"4-6, 1-6", p:4, t:"league", win:false},
     {d:"10/14", o:"w/ Juan vs Hernandez/Homes", s:"6-2, 5-7, 1-0", p:12, t:"league", win:true},
     {d:"10/7", o:"w/ Nick vs Will/Justin", s:"7-6", p:10, t:"practice", win:true},
@@ -390,12 +400,14 @@ function render() {
 function openModal(p) {
   document.getElementById("modal-title").textContent = p.name;
   let html = "";
-  const weights = [1.0, 0.9, 0.8, 0.7, 0.6, 0.5];
+  const weights = [1.0, 0.95, 0.90, 0.85, 0.80, 0.75, 0.70, 0.65, 0.60, 0.55];
   const results = p.results || [];
-  const totalW = weights.slice(0, results.length).reduce((a, b) => a + b, 0);
+  const recent = results.slice(0, 10);
+  const older = results.slice(10);
+  const totalW = weights.slice(0, recent.length).reduce((a, b) => a + b, 0);
   const isIndiv = currentTab === "doubles" && currentSub === "players";
   let sumContrib = 0;
-  results.forEach((r, i) => {
+  recent.forEach((r, i) => {
     const w = weights[i] || 0;
     const isLeague = r.t === "league";
     const base = isLeague ? Math.round(r.p / 1.5) : r.p;
@@ -420,7 +432,17 @@ function openModal(p) {
       <div class="pts" style="text-align:right; min-width:42px; font-size:15px;">${contribDisplay}</div>
     </div>`;
   });
-  if (isIndiv && results.length) {
+  older.forEach((r) => {
+    const outcome = r.win ? '<span class="win">W</span>' : '<span class="loss">L</span>';
+    html += `<div class="result" style="opacity:0.45; display:flex; justify-content:space-between; align-items:flex-start; gap:8px;">
+      <div>
+        ${outcome} <strong>${r.d}</strong> vs ${r.o}<br>
+        ${r.s} <span style="color:#57606a">· ${r.t}</span><br>
+        <span style="font-size:11px;color:#57606a;">Outside scoring window</span>
+      </div>
+    </div>`;
+  });
+  if (isIndiv && recent.length) {
     html += `<div style="margin-top:12px; padding-top:8px; border-top:1px solid var(--border); font-size:13px;">
       <strong>Leaderboard score</strong><br>
       <span style="font-size:12px;color:#57606a;">Σ weighted contributions = ${sumContrib.toFixed(1)}</span>
@@ -501,7 +523,7 @@ document.getElementById("modal").addEventListener("click", (e) => {
 });
 
 // Timestamp is set at generation time and does not update on page refresh
-document.getElementById("updated").textContent = "Updated 10/30 10:51 PM";
+document.getElementById("updated").textContent = "Updated 10/31 10:47 AM";
 
 render();
 </script>
