@@ -13,16 +13,23 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-
   top: 0;
   z-index: 100;
   background: var(--bg);
-  padding: 10px 10px 0 10px;
+  padding: 12px 12px 10px 12px;
+  border-bottom: 1px solid var(--border);
 }
-header { background: var(--navy); color: #fff; padding: 14px 12px; border-radius: 10px; margin-bottom: 12px; text-align: center; }
+@media (min-width: 700px) {
+  .sticky-header { padding: 16px 20px 12px 20px; }
+  body { font-size: 15px; }
+  .row { padding: 12px 16px; }
+}
+header { background: var(--navy); color: #fff; padding: 16px 14px; border-radius: 12px; margin-bottom: 14px; text-align: center; }
 header h1 { margin: 0 0 2px; font-size: 18px; }
 header p { margin: 0; opacity: 0.85; font-size: 12px; }
 .tabs { display: flex; gap: 6px; margin-bottom: 10px; }
-.tab { flex: 1; padding: 10px; border: none; border-radius: 8px; background: #eaeef2; font-weight: 600; cursor: pointer; font-size: 14px; }
-.tab.active { background: var(--navy); color: #fff; }
+.tab { flex: 1; padding: 11px 8px; border: none; border-radius: 8px; background: #eaeef2; font-weight: 600; cursor: pointer; font-size: 14px; transition: background 0.15s; }
+.tab:hover { background: #d8dee4; }
+.tab.active, .tab.sub.active { background: var(--navy); color: #fff; }
 .controls { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; font-size: 13px; }
-.row { background: var(--card); border-radius: 10px; margin-bottom: 8px; padding: 10px 12px; box-shadow: 0 1px 2px rgba(0,0,0,0.06); cursor: pointer; }
+.row { background: var(--card); border-radius: 10px; margin-bottom: 8px; padding: 12px 14px; box-shadow: 0 1px 2px rgba(0,0,0,0.05); cursor: pointer; transition: background 0.12s; }
 .row:active { background: #f0f3f6; }
 .row-header { display: flex; align-items: center; gap: 8px; }
 .rank { font-weight: 700; min-width: 22px; }
@@ -49,75 +56,85 @@ header p { margin: 0; opacity: 0.85; font-size: 12px; }
 <div class="sticky-header">
 <header>
   <h1>JETC / Veres</h1>
-  <p>Broward USTA 18+ 3.5 Night • Leaderboard <span style="opacity:0.7;">v1.3</span></p>
+  <p>Broward USTA 18+ 3.5 Night • Leaderboard <span style="opacity:0.7;">v2.0</span></p>
 </header>
 <div class="tabs">
   <button class="tab active" data-tab="singles">Singles</button>
   <button class="tab" data-tab="doubles">Doubles</button>
   <button class="tab" data-tab="math">Math</button>
 </div>
+<div class="subtabs" id="doubles-subtabs" style="display:none; gap:6px; margin-bottom:10px; padding:4px 0;">
+  <button class="tab sub active" data-sub="pairings">Pairings</button>
+  <button class="tab sub" data-sub="players">Players</button>
+</div>
 <div class="controls" id="controls">
   <label><input type="checkbox" id="guests"> Show guests</label>
-  <span id="updated" style="color:var(--muted);font-size:12px;">Updated 10/30 3:21 PM</span>
+  <span id="updated" style="color:var(--muted);font-size:12px;">Updated 10/30 9:03 PM</span>
 </div>
 </div>
-<div id="list" style="padding:0 10px;"></div>
-<div id="math" style="display:none; background:var(--card); border-radius:10px; padding:16px; font-size:13.5px; line-height:1.5; margin:0 10px;">
-  <h2 style="margin-top:0; font-size:17px;">How the Score Is Calculated</h2>
-  <p>The number shown next to each player (or pairing) is a <strong>weighted average of their most recent 6 results</strong>.</p>
-
-  <h3 style="font-size:15px; margin-bottom:6px;">1. Base points for a result</h3>
-  <p><strong>Set categories</strong> (used for single sets and to classify matches):</p>
-  <ul style="margin-top:4px;">
-    <li><strong>Decisive set</strong>: 6-0, 6-1, 6-2</li>
-    <li><strong>Competitive set</strong>: 6-3, 6-4, 7-5</li>
-    <li><strong>Contested set</strong>: 7-6</li>
-  </ul>
-
-  <p><strong>Single set</strong> (practice or league):</p>
-  <ul style="margin-top:4px;">
-    <li>Decisive win → <strong>14</strong> &nbsp;|&nbsp; Decisive loss → <strong>4</strong></li>
-    <li>Competitive win → <strong>12</strong> &nbsp;|&nbsp; Competitive loss → <strong>6</strong></li>
-    <li>Contested win → <strong>10</strong> &nbsp;|&nbsp; Contested loss → <strong>8</strong></li>
-  </ul>
-
-  <p><strong>Full match</strong> (best of 3 sets):</p>
-  <ul style="margin-top:4px;">
-    <li><strong>Decisive match</strong> — won in straight sets with at least one decisive set → win <strong>16</strong> / loss <strong>4</strong></li>
-    <li><strong>Competitive match</strong> — won in straight sets with no decisive sets, or won in 3 sets with at least one decisive set → win <strong>14</strong> / loss <strong>6</strong></li>
-    <li><strong>Contested match</strong> — won in 3 sets with no decisive sets → win <strong>12</strong> / loss <strong>8</strong></li>
-  </ul>
-
-  <p><strong>Partial sets</strong> (practice only): scored by the same set cutoffs using the final game score that was reached. A 5-2 is decisive; a 5-3 or 4-3 is competitive; a 7-6 partial is contested.</p>
-  <p><strong>League multiplier</strong>: every league result is multiplied by <strong>1.5</strong> after base points are assigned. Practice results use the base value with no multiplier.</p>
-  <p><strong>Forfeit</strong>: treated as a decisive win (14 for a set, 16 for a match) for the winner and a decisive loss (4) for the loser.</p>
-
-  <h3 style="font-size:15px; margin-bottom:6px;">2. Recency weighting (most recent 6 only)</h3>
-  <p>Only the 6 newest results for that player or pairing are used. Older results drop out of the calculation entirely.</p>
-  <p>Position weights (newest → oldest):</p>
-  <ul style="margin-top:4px;">
-    <li>Most recent result: 1.0</li>
-    <li>2nd most recent: 0.9</li>
-    <li>3rd: 0.8</li>
-    <li>4th: 0.7</li>
-    <li>5th: 0.6</li>
-    <li>6th (oldest in the window): 0.5</li>
-  </ul>
-  <p><strong>Time decay</strong>: if a result is more than 8 weeks old, its position weight is multiplied by an additional <strong>0.85</strong>. Results 8 weeks old or newer receive no extra decay.</p>
-  <p>Final weight for any result = position weight × time decay.</p>
-
-  <h3 style="font-size:15px; margin-bottom:6px;">3. Final score</h3>
-  <p>For each of the (up to) 6 results:</p>
-  <ol style="margin-top:4px;">
-    <li>Assign base points from the outcome definitions above.</li>
-    <li>Apply the league multiplier (×1.5) if it is a league match.</li>
-    <li>Multiply by the final weight (position weight × time decay).</li>
-  </ol>
-  <p><strong>Score = Σ (points × final weight) ÷ Σ (final weight)</strong></p>
-  <p>Players and pairings are ranked by this score, highest first. If a player or pairing has fewer than 6 results, the average is taken over the results that exist (using the same position weights starting from the newest). Frequency of play does not add points — only the quality and recency of the results that do exist.</p>
-
-  <h3 style="font-size:15px; margin-bottom:6px;">4. Movement arrows</h3>
-  <p>Green ↑ or navy ↓ compares the current rank to the rank stored at the last update.</p>
+<div id="list" style="padding:12px 10px 0 10px;"></div>
+<div id="math" style="display:none; background:var(--card); border-radius:10px; padding:14px; font-size:13.5px; line-height:1.5; margin:0 10px;">
+  <div class="subtabs" style="display:flex; gap:6px; margin-bottom:14px; position:sticky; top:156px; background:var(--card); padding:12px 0; z-index:50; border-bottom:1px solid var(--border);">
+    <button class="tab sub active" data-math="main">Singles & Doubles</button>
+    <button class="tab sub" data-math="indiv">Individual Doubles</button>
+  </div>
+  <div id="math-main">
+    <h2 style="margin-top:0; font-size:17px;">How the Score Is Calculated</h2>
+    <p>The number shown next to each player (or pairing) is a <strong>weighted average of their most recent 6 results</strong>.</p>
+    <h3 style="font-size:15px; margin-bottom:6px;">1. Base points for a result</h3>
+    <p><strong>Set categories</strong> (used for single sets and to classify matches):</p>
+    <ul style="margin-top:4px;">
+      <li><strong>Decisive set</strong>: 6-0, 6-1, 6-2</li>
+      <li><strong>Competitive set</strong>: 6-3, 6-4, 7-5</li>
+      <li><strong>Contested set</strong>: 7-6</li>
+    </ul>
+    <p><strong>Single set</strong> (practice or league):</p>
+    <ul style="margin-top:4px;">
+      <li>Decisive win → <strong>14</strong> &nbsp;|&nbsp; Decisive loss → <strong>4</strong></li>
+      <li>Competitive win → <strong>12</strong> &nbsp;|&nbsp; Competitive loss → <strong>6</strong></li>
+      <li>Contested win → <strong>10</strong> &nbsp;|&nbsp; Contested loss → <strong>8</strong></li>
+    </ul>
+    <p><strong>Full match</strong> (best of 3 sets):</p>
+    <ul style="margin-top:4px;">
+      <li><strong>Decisive match</strong> — won in straight sets with at least one decisive set → win <strong>16</strong> / loss <strong>4</strong></li>
+      <li><strong>Competitive match</strong> — won in straight sets with no decisive sets, or won in 3 sets with at least one decisive set → win <strong>14</strong> / loss <strong>6</strong></li>
+      <li><strong>Contested match</strong> — won in 3 sets with no decisive sets → win <strong>12</strong> / loss <strong>8</strong></li>
+    </ul>
+    <p><strong>Partial sets</strong> (practice only): scored by the same set cutoffs using the final game score that was reached. A 5-2 is decisive; a 5-3 or 4-3 is competitive; a 7-6 partial is contested.</p>
+    <p><strong>League multiplier</strong>: every league result is multiplied by <strong>1.5</strong> after base points are assigned. Practice results use the base value with no multiplier.</p>
+    <p><strong>Forfeit</strong>: treated as a decisive win (14 for a set, 16 for a match) for the winner and a decisive loss (4) for the loser.</p>
+    <h3 style="font-size:15px; margin-bottom:6px;">2. Recency weighting (most recent 6 only)</h3>
+    <p>Only the 6 newest results for that player or pairing are used. Older results drop out of the calculation entirely.</p>
+    <p>Position weights (newest → oldest):</p>
+    <ul style="margin-top:4px;">
+      <li>Most recent result: 1.0</li>
+      <li>2nd most recent: 0.9</li>
+      <li>3rd: 0.8</li>
+      <li>4th: 0.7</li>
+      <li>5th: 0.6</li>
+      <li>6th (oldest in the window): 0.5</li>
+    </ul>
+    <p><strong>Time decay</strong>: if a result is more than 8 weeks old, its position weight is multiplied by an additional <strong>0.85</strong>. Results 8 weeks old or newer receive no extra decay.</p>
+    <p>Final weight for any result = position weight × time decay.</p>
+    <h3 style="font-size:15px; margin-bottom:6px;">3. Final score</h3>
+    <p>For each of the (up to) 6 results:</p>
+    <ol style="margin-top:4px;">
+      <li>Assign base points from the outcome definitions above.</li>
+      <li>Apply the league multiplier (×1.5) if it is a league match.</li>
+      <li>Multiply by the final weight (position weight × time decay).</li>
+    </ol>
+    <p><strong>Score = Σ (points × final weight) ÷ Σ (final weight)</strong></p>
+    <p>Players and pairings are ranked by this score, highest first. If a player or pairing has fewer than 6 results, the average is taken over the results that exist (using the same position weights starting from the newest). Frequency of play does not add points — only the quality and recency of the results that do exist.</p>
+    <h3 style="font-size:15px; margin-bottom:6px;">4. Movement arrows</h3>
+    <p>Green ↑ or red ↓ compares the current rank to the rank stored at the last update.</p>
+  </div>
+  <div id="math-indiv" style="display:none;">
+    <h3 style="font-size:15px; margin-bottom:6px;">Individual Doubles ranking</h3>
+    <p>The Players sub-tab under Doubles ranks individuals by their contribution across pairings.</p>
+    <p>For each doubles result, the pairing’s total points (after league multiplier) are split between the two partners and adjusted by partner strength using a <strong>0.15 coefficient</strong>:</p>
+    <p style="font-family:monospace; font-size:12px; background:#f6f8fa; padding:8px; border-radius:6px;">adjusted = base × (1 + 0.15 × (player score − partner score) / 10)</p>
+    <p>The two adjusted values are then normalized so they sum to the pairing’s total. Each player’s individual score is the weighted average of their adjusted shares across their most recent 6 doubles results, using the same position weights and 0.85 time decay as the main boards.</p>
+  </div>
 </div>
 <div id="modal" class="modal">
   <div class="modal-content">
@@ -256,11 +273,87 @@ const doubles = [
   ]}
 ];
 
+const indivDoubles = [
+  {name:"Michael Adler", prev:null, score:10.9, why:"Strong with Nick", last:"10/28 W", guest:false, results:[
+    {d:"10/28", o:"w/ Nick vs Ma/Escallon", s:"6-4, 4-6, 1-0", p:15, t:"league", win:true},
+    {d:"10/21", o:"w/ Nick vs Mazuera/Vilchez", s:"6-0, 6-4", p:24, t:"league", win:true},
+    {d:"10/14", o:"w/ Nick vs Sanabria/Ugerman", s:"6-2, 6-2", p:24, t:"league", win:true}
+  ]},
+  {name:"Nick Velar", prev:null, score:7.1, why:"Multiple wins", last:"10/28 W", guest:false, results:[
+    {d:"10/28", o:"w/ Mike vs Ma/Escallon", s:"6-4, 4-6, 1-0", p:15, t:"league", win:true},
+    {d:"10/21", o:"w/ Mike vs Mazuera/Vilchez", s:"6-0, 6-4", p:24, t:"league", win:true},
+    {d:"10/14", o:"w/ Mike vs Sanabria/Ugerman", s:"6-2, 6-2", p:24, t:"league", win:true},
+    {d:"10/7", o:"w/ Sterling vs Will/Justin", s:"7-6", p:10, t:"practice", win:true},
+    {d:"10/5", o:"w/ Logan vs Aidan/Will", s:"6-2, 0-6, 10-5", p:6, t:"practice", win:false}
+  ]},
+  {name:"Aidan Veres", prev:null, score:6.3, why:"Several pairings", last:"10/28 W", guest:false, results:[
+    {d:"10/28", o:"w/ Carlos vs Brownstein/Shelton", s:"7-6, 7-6", p:12, t:"league", win:true},
+    {d:"10/10", o:"w/ Will vs Tyler/Juan", s:"7-6", p:12, t:"practice", win:true},
+    {d:"10/7", o:"w/ Justin vs Sterling/Jose", s:"6-2", p:14, t:"practice", win:true},
+    {d:"10/5", o:"w/ Will vs Logan/Nick", s:"6-2, 0-6, 10-5", p:12, t:"practice", win:true},
+    {d:"10/3", o:"w/ Alec vs Adam/Jonathan", s:"5-4", p:12, t:"practice", win:true}
+  ]},
+  {name:"Will Kuehne", prev:null, score:6.1, why:"Mixed", last:"10/21 W", guest:false, results:[
+    {d:"10/21", o:"w/ Justin vs Alonso/Ely", s:"6-3, 6-7, 1-0", p:10, t:"league", win:true},
+    {d:"10/10", o:"w/ Aidan vs Tyler/Juan", s:"7-6", p:12, t:"practice", win:true},
+    {d:"10/5", o:"w/ Aidan vs Logan/Nick", s:"6-2, 0-6, 10-5", p:12, t:"practice", win:true},
+    {d:"9/26", o:"w/ Justin vs Carlos/Juan", s:"6-2", p:14, t:"practice", win:true}
+  ]},
+  {name:"Alec Bryant", prev:null, score:6.0, why:"Single result", last:"10/3 W", guest:false, results:[
+    {d:"10/3", o:"w/ Aidan vs Adam/Jonathan", s:"5-4", p:12, t:"practice", win:true}
+  ]},
+  {name:"Justin Legido", prev:null, score:5.0, why:"Variable", last:"10/28 L", guest:false, results:[
+    {d:"10/28", o:"w/ Sterling vs Levine/Baseman", s:"4-6, 1-6", p:4, t:"league", win:false},
+    {d:"10/21", o:"w/ Will vs Alonso/Ely", s:"6-3, 6-7, 1-0", p:10, t:"league", win:true},
+    {d:"10/7", o:"w/ Aidan vs Sterling/Jose", s:"6-2", p:14, t:"practice", win:true},
+    {d:"10/3", o:"w/ Tyler vs Patrick/Carlos", s:"6-4", p:6, t:"practice", win:false},
+    {d:"9/26", o:"w/ Will vs Carlos/Juan", s:"6-2", p:14, t:"practice", win:true}
+  ]},
+  {name:"Juan Gomez", prev:null, score:4.7, why:"Limited", last:"10/14 W", guest:false, results:[
+    {d:"10/14", o:"w/ Sterling vs Hernandez/Homes", s:"6-2, 5-7, 1-0", p:12, t:"league", win:true},
+    {d:"10/10", o:"w/ Tyler vs Aidan/Will", s:"7-6", p:6, t:"practice", win:false}
+  ]},
+  {name:"Carlos Gomez", prev:null, score:4.5, why:"Mixed", last:"10/28 W", guest:false, results:[
+    {d:"10/28", o:"w/ Aidan vs Brownstein/Shelton", s:"7-6, 7-6", p:12, t:"league", win:true},
+    {d:"10/14", o:"w/ Patrick vs Kaine/Sutker", s:"1-6, 6-0, 1-0", p:6, t:"league", win:false}
+  ]},
+  {name:"Sterling Savill", prev:null, score:3.6, why:"Variable", last:"10/28 L", guest:false, results:[
+    {d:"10/28", o:"w/ Justin vs Levine/Baseman", s:"4-6, 1-6", p:4, t:"league", win:false},
+    {d:"10/14", o:"w/ Juan vs Hernandez/Homes", s:"6-2, 5-7, 1-0", p:12, t:"league", win:true},
+    {d:"10/7", o:"w/ Nick vs Will/Justin", s:"7-6", p:10, t:"practice", win:true},
+    {d:"10/7", o:"w/ Jose vs Aidan/Justin", s:"6-2", p:4, t:"practice", win:false}
+  ]},
+  {name:"Patrick Rubenstein", prev:null, score:2.9, why:"Mostly losses", last:"10/14 L", guest:false, results:[
+    {d:"10/14", o:"w/ Carlos vs Kaine/Sutker", s:"1-6, 6-0, 1-0", p:6, t:"league", win:false}
+  ]},
+  {name:"Tyler Crowe", prev:null, score:2.9, why:"Guest", last:"10/10 L", guest:true, results:[
+    {d:"10/10", o:"w/ Juan vs Aidan/Will", s:"7-6", p:6, t:"practice", win:false},
+    {d:"10/3", o:"w/ Justin vs Patrick/Carlos", s:"6-4", p:6, t:"practice", win:false}
+  ]},
+  {name:"Logan Roschman", prev:null, score:2.8, why:"Single loss", last:"10/5 L", guest:false, results:[
+    {d:"10/5", o:"w/ Nick vs Aidan/Will", s:"6-2, 0-6, 10-5", p:6, t:"practice", win:false}
+  ]},
+  {name:"Jonathan Jaffe", prev:null, score:0, why:"No doubles results", last:"—", guest:false, results:[]},
+  {name:"Kevin Rodengen", prev:null, score:0, why:"No doubles results", last:"—", guest:false, results:[]},
+  {name:"Adam D'Anna", prev:null, score:0, why:"No doubles results", last:"—", guest:false, results:[]},
+  {name:"Parker Long", prev:null, score:0, why:"No doubles results", last:"—", guest:false, results:[]},
+  {name:"Jose (guest)", prev:null, score:2.0, why:"Guest", last:"10/7 L", guest:true, results:[
+    {d:"10/7", o:"w/ Sterling vs Aidan/Justin", s:"6-2", p:4, t:"practice", win:false}
+  ]}
+];
+
 let currentTab = "singles";
+let currentSub = "pairings";
+
+function getSource() {
+  if (currentTab === "singles") return singles;
+  if (currentTab === "doubles" && currentSub === "players") return indivDoubles;
+  return doubles;
+}
 
 function getData() {
   const showGuests = document.getElementById("guests").checked;
-  const src = currentTab === "singles" ? singles : doubles;
+  const src = getSource();
   return src.filter(p => showGuests || !p.guest).sort((a,b) => b.score - a.score);
 }
 
@@ -278,11 +371,12 @@ function render() {
     }
     const div = document.createElement("div");
     div.className = "row" + (p.guest ? " guest" : "");
+    const limited = (p.results || []).length < 3 ? ' <span style="font-size:11px;color:#57606a;">· limited data</span>' : "";
     div.innerHTML = `
       <div class="row-header">
         <span class="rank">${rank}</span>
         <span class="arrow ${cls}">${arrow}</span>
-        <span class="name">${p.name}</span>
+        <span class="name">${p.name}${limited}</span>
         <span class="score">${p.score.toFixed(1)}</span>
       </div>
       <div class="why">${p.why}</div>
@@ -299,25 +393,39 @@ function openModal(p) {
   const weights = [1.0, 0.9, 0.8, 0.7, 0.6, 0.5];
   const results = p.results || [];
   const totalW = weights.slice(0, results.length).reduce((a, b) => a + b, 0);
+  const isIndiv = currentTab === "doubles" && currentSub === "players";
+  let sumContrib = 0;
   results.forEach((r, i) => {
     const w = weights[i] || 0;
     const isLeague = r.t === "league";
     const base = isLeague ? Math.round(r.p / 1.5) : r.p;
     const applied = r.p;
-    const contrib = totalW > 0 ? ((applied * w) / totalW).toFixed(1) : "0.0";
+    const contrib = totalW > 0 ? (applied * w) / totalW : 0;
+    sumContrib += contrib;
+    const contribDisplay = contrib.toFixed(1);
     const outcome = r.win ? '<span class="win">W</span>' : '<span class="loss">L</span>';
     const ptsDisplay = isLeague
       ? `<span class="pts">${base} pts</span> <span style="color:#57606a;font-size:11px;">×1.5 = ${applied}</span>`
       : `<span class="pts">${applied} pts</span>`;
+    let extra = "";
+    if (isIndiv) {
+      extra = `<br><span style="font-size:11px;color:#57606a;">0.15 partner adjustment applied → ${applied} pts credited to this player</span>`;
+    }
     html += `<div class="result" style="display:flex; justify-content:space-between; align-items:flex-start; gap:8px;">
       <div>
         ${outcome} <strong>${r.d}</strong> vs ${r.o} &nbsp; ${ptsDisplay}<br>
-        ${r.s} <span style="color:#57606a">· ${r.t}</span><br>
-        <span style="font-size:11px;color:#57606a;">(${applied} × ${w}) ÷ ${totalW.toFixed(1)} = ${contrib}</span>
+        ${r.s} <span style="color:#57606a">· ${r.t}</span>${extra}<br>
+        <span style="font-size:11px;color:#57606a;">(${applied} × ${w}) ÷ ${totalW.toFixed(1)} = ${contribDisplay}</span>
       </div>
-      <div class="pts" style="text-align:right; min-width:42px; font-size:15px;">${contrib}</div>
+      <div class="pts" style="text-align:right; min-width:42px; font-size:15px;">${contribDisplay}</div>
     </div>`;
   });
+  if (isIndiv && results.length) {
+    html += `<div style="margin-top:12px; padding-top:8px; border-top:1px solid var(--border); font-size:13px;">
+      <strong>Leaderboard score</strong><br>
+      <span style="font-size:12px;color:#57606a;">Σ weighted contributions = ${sumContrib.toFixed(1)}</span>
+    </div>`;
+  }
   if (!html) html = "<p>No scored results yet.</p>";
   document.getElementById("modal-body").innerHTML = html;
   document.getElementById("modal").style.display = "block";
@@ -327,11 +435,40 @@ function closeModal() {
   document.getElementById("modal").style.display = "none";
 }
 
-document.querySelectorAll(".tab").forEach(btn => {
+document.querySelectorAll("[data-math]").forEach(btn => {
   btn.addEventListener("click", () => {
-    document.querySelectorAll(".tab").forEach(b => b.classList.remove("active"));
+    document.querySelectorAll("[data-math]").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    document.getElementById("math-main").style.display = "none";
+    document.getElementById("math-indiv").style.display = "none";
+    const which = btn.dataset.math;
+    if (which === "main") document.getElementById("math-main").style.display = "block";
+    if (which === "indiv") document.getElementById("math-indiv").style.display = "block";
+  });
+});
+
+document.querySelectorAll(".tab.sub").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".tab.sub").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    currentSub = btn.dataset.sub;
+    render();
+  });
+});
+document.querySelectorAll(".tab:not(.sub)").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".tab:not(.sub)").forEach(b => b.classList.remove("active"));
     btn.classList.add("active");
     currentTab = btn.dataset.tab;
+    const subtabs = document.getElementById("doubles-subtabs");
+    if (currentTab === "doubles") {
+      subtabs.style.display = "flex";
+      document.querySelectorAll("#doubles-subtabs .tab.sub").forEach(b => b.classList.remove("active"));
+      document.querySelector("#doubles-subtabs .tab.sub[data-sub='pairings']").classList.add("active");
+      currentSub = "pairings";
+    } else {
+      subtabs.style.display = "none";
+    }
     const list = document.getElementById("list");
     const math = document.getElementById("math");
     const controls = document.getElementById("controls");
@@ -339,6 +476,10 @@ document.querySelectorAll(".tab").forEach(btn => {
       list.style.display = "none";
       math.style.display = "block";
       controls.style.display = "none";
+      document.querySelectorAll("[data-math]").forEach(b => b.classList.remove("active"));
+      document.querySelector("[data-math='main']").classList.add("active");
+      document.getElementById("math-main").style.display = "block";
+      document.getElementById("math-indiv").style.display = "none";
     } else {
       list.style.display = "block";
       math.style.display = "none";
@@ -354,7 +495,7 @@ document.getElementById("modal").addEventListener("click", (e) => {
 });
 
 // Timestamp is set at generation time and does not update on page refresh
-document.getElementById("updated").textContent = "Updated 10/30 3:21 PM";
+document.getElementById("updated").textContent = "Updated 10/30 9:03 PM";
 
 render();
 </script>
