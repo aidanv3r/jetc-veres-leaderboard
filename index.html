@@ -57,7 +57,7 @@ header p { margin: 0; opacity: 0.85; font-size: 12px; }
 <div class="sticky-header">
 <header>
   <h1>JETC / Veres</h1>
-  <p>Broward USTA 18+ 3.5 Night • Leaderboard <span style="opacity:0.7;">v2.1</span></p>
+  <p>Broward USTA 18+ 3.5 Night • Leaderboard <span style="opacity:0.7;">v2.2</span></p>
 </header>
 <div class="tabs">
   <button class="tab active" data-tab="singles">Singles</button>
@@ -74,7 +74,7 @@ header p { margin: 0; opacity: 0.85; font-size: 12px; }
 </div>
 <div class="controls" id="controls">
   <label><input type="checkbox" id="guests"> Show guests</label>
-  <span id="updated" style="color:var(--muted);font-size:12px;">Updated 10/30 9:52 PM</span>
+  <span id="updated" style="color:var(--muted);font-size:12px;">Updated 10/30 10:51 PM</span>
 </div>
 </div>
 <div id="list" style="padding:12px 10px 0 10px;"></div>
@@ -380,7 +380,6 @@ function render() {
         <span class="name">${p.name}${limited}</span>
         <span class="score">${p.score.toFixed(1)}</span>
       </div>
-      <div class="why">${p.why}</div>
       <div class="meta">${p.last}</div>
     `;
     div.addEventListener("click", () => openModal(p));
@@ -502,7 +501,7 @@ document.getElementById("modal").addEventListener("click", (e) => {
 });
 
 // Timestamp is set at generation time and does not update on page refresh
-document.getElementById("updated").textContent = "Updated 10/30 9:52 PM";
+document.getElementById("updated").textContent = "Updated 10/30 10:51 PM";
 
 render();
 </script>
