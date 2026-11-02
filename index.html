@@ -88,7 +88,7 @@ header p { margin: 0; font-size: 12.5px; }
 <div class="sticky-header">
 <header>
   <h1>JETC / Veres</h1>
-  <p>Broward USTA 18+ 3.5 Night • Leaderboard <span style="opacity:0.7;">v3.1</span></p>
+  <p>Broward USTA 18+ 3.5 Night • Leaderboard <span style="opacity:0.7;">v3.2</span></p>
 </header>
 <div class="tabs">
   <button class="tab active" data-tab="singles">Singles</button>
@@ -133,12 +133,13 @@ header p { margin: 0; font-size: 12.5px; }
     <p><strong>Full match</strong> (best of 3 sets) — total 20 points, spread 12 / 8 / 4:</p>
     <ul style="margin-top:4px;">
       <li><strong>Decisive match</strong> — won in straight sets with at least one decisive set → win <strong>16</strong> / loss <strong>4</strong></li>
-      <li><strong>Competitive match</strong> — won in straight sets with no decisive sets, or won in 3 sets with at least one decisive set → win <strong>14</strong> / loss <strong>6</strong></li>
-      <li><strong>Contested match</strong> — won in 3 sets with no decisive sets → win <strong>12</strong> / loss <strong>8</strong></li>
+      <li><strong>Competitive match</strong> — won in straight sets with no decisive set but at least one set that was not a tiebreak set (for example 6-3, 6-4 or 7-6, 6-4), or decided in a tiebreak/third set in a match that included a decisive set → win <strong>14</strong> / loss <strong>6</strong></li>
+      <li><strong>Contested match</strong> — no decisive set in the match, and either the match was decided in a tiebreak/third set or every set went to a tiebreak (for example 7-6, 7-6) → win <strong>12</strong> / loss <strong>8</strong></li>
     </ul>
     <p><strong>Partial sets</strong> are classified by the games reached: 5-2 is decisive; 5-3 or 4-3 is competitive. If a practice session ends with the sets split, <strong>each set is scored as its own single-set result</strong>.</p>
     <p><strong>Forfeits</strong>: a voluntary forfeit (quitting) is a decisive win/loss for the format in progress — 15/5 for a set, 16/4 for a match — no matter what the score was when play stopped. An injury forfeit keeps the score at stoppage, and that score is classified by the normal rules.</p>
     <p><strong>League multiplier</strong>: every league result is multiplied by <strong>1.5</strong> after base points are assigned. Practice results use the base value with no league multiplier.</p>
+    <p><strong>Line multiplier</strong> (league only): a league result is also multiplied by the line actually played — <strong>#1 line ×1.10, #2 line ×1.00, #3 doubles ×0.90</strong> — for both sides, win or lose, so playing a higher line earns more for a win and keeps more points in a loss. "Actually played" means the line of the opponents faced, which is the player's own line except when courts are switched. Practice results have no lines and no line multiplier.</p>
     <p><strong>Drills are not results and are never counted.</strong></p>
     <h3 style="font-size:15px; margin-bottom:6px;">2. Recency weighting (most recent 10 only)</h3>
     <p>Only the 10 newest results for that player or pairing are used.</p>
@@ -546,6 +547,7 @@ function detailLines(r, key) {
   const lines = [];
   lines.push(`${esc(d.category || "Result")} — base ${fmt(d.base)} pts`);
   if (d.leagueMultiplier) lines.push(`League multiplier: ×1.5`);
+  if (d.line) lines.push(`Line played: #${d.line} — line multiplier: ×${Number(d.lineMultiplier).toFixed(2)}`);
   if (d.opponentMultiplier) lines.push(`Opponent adjustment: ×${Number(d.opponentMultiplier).toFixed(3)}`);
   if (key === "indivDoubles") {
     if (d.pairingPoints != null) lines.push(`Pairing points: ${fmt(d.pairingPoints)}`);

@@ -77,11 +77,27 @@
     const anyDecisive = match.sets.some(
       (set) => !set.matchTiebreak && setCategory(set.games) === "decisive"
     );
+    // Margin-first categories (v3.2, Aidan's ruling): a match with no rout
+    // set is contested when it was decided in a tiebreak/third set OR when
+    // every set went to a tiebreak (e.g. 7-6, 7-6 in straight sets).
+    const allTiebreakSets = match.sets
+      .filter((set) => !set.matchTiebreak)
+      .every((set) => setCategory(set.games) === "contested");
     let cat;
     if (loserSets === 0 && anyDecisive) cat = "decisive";
-    else if (loserSets === 0 || anyDecisive) cat = "competitive";
-    else cat = "contested";
+    else if (!anyDecisive && (loserSets > 0 || allTiebreakSets)) cat = "contested";
+    else cat = "competitive";
     return { category: cat, label: `${cat} match`, ...MATCH_POINTS[cat] };
+  }
+
+  // Line multiplier (v3.2, Aidan's ruling): league results only, keyed to
+  // the line actually played. #1 line 1.10, #2 line 1.00, #3 doubles 0.90.
+  // Practice results have no lines and always use 1.
+  const LINE_MULTIPLIERS = { 1: 1.1, 2: 1.0, 3: 0.9 };
+  function lineMultiplier(match) {
+    if (match.context !== "league") return 1;
+    const m = LINE_MULTIPLIERS[match.line];
+    return m == null ? 1 : m;
   }
 
   function setsLabel(match) {
@@ -172,8 +188,15 @@
           let points;
           let detail;
           if (match.context === "league") {
-            points = base * 1.5;
-            detail = { base, category: cls.label, leagueMultiplier: 1.5 };
+            const lm = lineMultiplier(match);
+            points = base * 1.5 * lm;
+            detail = {
+              base,
+              category: cls.label,
+              leagueMultiplier: 1.5,
+              line: match.line != null ? match.line : null,
+              lineMultiplier: lm,
+            };
           } else {
             const oppName = sideNames(match.sides[1 - s])[0];
             const ownBefore = boardScore(singlesRes, name, match.date);
@@ -214,8 +237,15 @@
           let points;
           let detail;
           if (match.context === "league") {
-            points = base * 1.5;
-            detail = { base, category: cls.label, leagueMultiplier: 1.5 };
+            const lm = lineMultiplier(match);
+            points = base * 1.5 * lm;
+            detail = {
+              base,
+              category: cls.label,
+              leagueMultiplier: 1.5,
+              line: match.line != null ? match.line : null,
+              lineMultiplier: lm,
+            };
           } else {
             const key = pairKey(names);
             const oppNames = sideNames(match.sides[1 - s]);
@@ -292,6 +322,9 @@
                 category: detail.category,
                 ...(detail.leagueMultiplier
                   ? { leagueMultiplier: detail.leagueMultiplier }
+                  : {}),
+                ...(detail.lineMultiplier
+                  ? { line: detail.line, lineMultiplier: detail.lineMultiplier }
                   : {}),
                 ...(detail.opponentMultiplier
                   ? { opponentMultiplier: detail.opponentMultiplier }

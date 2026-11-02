@@ -1208,6 +1208,7 @@ const MATCHES = [
     "sequence": 1,
     "format": "doubles",
     "context": "league",
+    "line": 3,
     "completion": "match",
     "sides": [
       {
@@ -1264,6 +1265,7 @@ const MATCHES = [
     "sequence": 2,
     "format": "doubles",
     "context": "league",
+    "line": 1,
     "completion": "match",
     "sides": [
       {
@@ -1320,6 +1322,7 @@ const MATCHES = [
     "sequence": 3,
     "format": "doubles",
     "context": "league",
+    "line": 2,
     "completion": "match",
     "sides": [
       {
@@ -1369,6 +1372,7 @@ const MATCHES = [
     "sequence": 4,
     "format": "singles",
     "context": "league",
+    "line": 2,
     "completion": "match",
     "sides": [
       {
@@ -1412,6 +1416,7 @@ const MATCHES = [
     "sequence": 5,
     "format": "singles",
     "context": "league",
+    "line": 1,
     "completion": "match",
     "sides": [
       {
@@ -1455,6 +1460,7 @@ const MATCHES = [
     "sequence": 1,
     "format": "doubles",
     "context": "league",
+    "line": 3,
     "completion": "match",
     "sides": [
       {
@@ -1515,6 +1521,7 @@ const MATCHES = [
     "sequence": 2,
     "format": "doubles",
     "context": "league",
+    "line": 2,
     "completion": "match",
     "sides": [
       {
@@ -1564,6 +1571,7 @@ const MATCHES = [
     "sequence": 3,
     "format": "singles",
     "context": "league",
+    "line": 2,
     "completion": "match",
     "sides": [
       {
@@ -1607,6 +1615,7 @@ const MATCHES = [
     "sequence": 4,
     "format": "singles",
     "context": "league",
+    "line": 1,
     "completion": "match",
     "sides": [
       {
@@ -1648,6 +1657,7 @@ const MATCHES = [
     "date": "2026-10-21",
     "format": "doubles",
     "context": "league",
+    "line": 1,
     "completion": "match",
     "sides": [
       {
@@ -1815,6 +1825,7 @@ const MATCHES = [
     "sequence": 1,
     "format": "doubles",
     "context": "league",
+    "line": 2,
     "completion": "match",
     "sides": [
       {
@@ -1864,6 +1875,7 @@ const MATCHES = [
     "sequence": 2,
     "format": "doubles",
     "context": "league",
+    "line": 3,
     "completion": "match",
     "sides": [
       {
@@ -1913,6 +1925,7 @@ const MATCHES = [
     "sequence": 3,
     "format": "doubles",
     "context": "league",
+    "line": 1,
     "completion": "match",
     "sides": [
       {
@@ -1973,6 +1986,7 @@ const MATCHES = [
     "sequence": 4,
     "format": "singles",
     "context": "league",
+    "line": 2,
     "completion": "match",
     "sides": [
       {
@@ -2016,6 +2030,7 @@ const MATCHES = [
     "sequence": 5,
     "format": "singles",
     "context": "league",
+    "line": 1,
     "completion": "match",
     "sides": [
       {
@@ -3300,7 +3315,7 @@ const HISTORICAL_RESULTS = [
   }
 ];
 
-const LAST_UPDATED = "Last update 11/01 11:28pm";
+const LAST_UPDATED = "Last update 11/02 12:16am";
 
 // Ranks/order from the current published boards. These are used only for
 // movement arrows, deterministic tie-breaks, and the Compare view.
