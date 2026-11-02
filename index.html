@@ -34,6 +34,10 @@ header p { margin: 0; font-size: 12.5px; }
 .row { background: var(--card); border-radius: 10px; margin-bottom: 8px; padding: 12px 14px; box-shadow: 0 1px 2px rgba(0,0,0,0.05); cursor: pointer; transition: background 0.12s; }
 .row:active { background: #f0f3f6; }
 .row-header { display: flex; align-items: center; gap: 8px; }
+.board-head { display: flex; align-items: center; gap: 8px; padding: 2px 14px 8px; font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+.board-head .bh-rank { width: 58px; flex: none; }
+.board-head .bh-name { flex: 1; }
+.board-head .bh-rating { min-width: 42px; text-align: right; }
 .rank { font-weight: 700; min-width: 22px; }
 .arrow { font-weight: 700; min-width: 28px; font-size: 13px; }
 .arrow.up { color: var(--green); }
@@ -43,10 +47,25 @@ header p { margin: 0; font-size: 12.5px; }
 .why { font-size: 12px; color: var(--muted); margin-top: 4px; }
 .score { font-weight: 700; color: var(--navy); min-width: 42px; text-align: right; font-size: 13px; }
 .guest { opacity: 0.65; }
-.modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.55); z-index: 999; padding: 16px; }
-.modal-content { background: #fff; border-radius: 12px; max-width: 480px; margin: 20px auto; padding: 16px; max-height: 85vh; overflow-y: auto; }
+.modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.55); z-index: 999; padding: 16px; overscroll-behavior: contain; touch-action: none; }
+.modal-content { background: #fff; border-radius: 12px; max-width: 480px; margin: 20px auto; padding: 0 16px; max-height: 85vh; overflow: hidden; position: relative; display: flex; flex-direction: column; }
+.modal-head { background: #fff; display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; padding-top: 14px; flex: none; }
+.modal-head h2 { margin: 0 0 10px; }
+#modal-body { margin-top: 2px; overflow-y: auto; flex: 1 1 auto; min-height: 0; overscroll-behavior: contain; -webkit-overflow-scrolling: touch; touch-action: pan-y; padding-bottom: 16px; }
+.flip { border-bottom: 1px solid var(--border); perspective: 900px; }
+.flip:last-child { border-bottom: none; }
+.flip-inner { position: relative; transform-style: preserve-3d; transition: transform 0.5s; }
+.flip.flipped .flip-inner { transform: rotateY(180deg); }
+.flip-face { backface-visibility: hidden; -webkit-backface-visibility: hidden; padding: 8px 0; font-size: 13px; }
+.flip-front { position: relative; }
+.flip-back { position: absolute; inset: 0; transform: rotateY(180deg); overflow-y: auto; background: #f6f8fa; border-radius: 8px; padding: 8px; pointer-events: none; overscroll-behavior: contain; }
+.flip.flipped .flip-back { pointer-events: auto; }
+.flip.flipped .flip-front { pointer-events: none; }
+.seemath, .flipback { margin-top: 6px; padding: 5px 10px; border: none; border-radius: 8px; background: #eaeef2; color: #0a2540; font-weight: 600; cursor: pointer; font-size: 12px; }
+.carry { font-size: 12px; color: var(--navy); font-weight: 600; }
+@media (prefers-reduced-motion: reduce) { .flip-inner { transition: none; } }
 .modal h2 { margin: 0 0 12px; font-size: 17px; }
-.close { float: right; font-size: 22px; cursor: pointer; color: var(--muted); line-height: 1; }
+.close { font-size: 24px; cursor: pointer; color: var(--muted); line-height: 1; padding: 2px 4px; flex: none; }
 .result { padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 13px; }
 .result:last-child { border-bottom: none; }
 .win { color: var(--green); font-weight: 700; }
@@ -88,7 +107,7 @@ header p { margin: 0; font-size: 12.5px; }
 <div class="sticky-header">
 <header>
   <h1>JETC / Veres</h1>
-  <p>Broward USTA 18+ 3.5 Night • Leaderboard <span style="opacity:0.7;">v3.2</span></p>
+  <p>Broward USTA 18+ 3.5 Night • Leaderboard <span style="opacity:0.7;">v3.3</span></p>
 </header>
 <div class="tabs">
   <button class="tab active" data-tab="singles">Singles</button>
@@ -155,7 +174,7 @@ header p { margin: 0; font-size: 12.5px; }
     <p>Players and pairings are ranked by this score, highest first. If a player or pairing has fewer than 10 results, the average is taken over the results that exist. Frequency of play does not add points.</p>
     <h3 style="font-size:15px; margin-bottom:6px;">5. Movement arrows and earlier results</h3>
     <p>In the <strong>New boards</strong> view, green ↑ or red ↓ compares the new rank to the rank on the current published board.</p>
-    <p>Spring 2026 results may be shown in a player’s pop-up window under <strong>“Earlier results — not counted in this score.”</strong> They are history only: they have no points and never change a score, a rank, or an adjustment.</p>
+    <p>Spring 2026 results may be shown in a player’s pop-up window under <strong>“Earlier results — not counted in this rating.”</strong> They are history only: they have no points and never change a score, a rank, or an adjustment.</p>
   </div>
   <div id="math-indiv" style="display:none;">
     <h3 style="font-size:15px; margin-bottom:6px;">Individual Doubles ranking</h3>
@@ -169,8 +188,10 @@ header p { margin: 0; font-size: 12.5px; }
 
 <div id="modal" class="modal">
   <div class="modal-content">
-    <span class="close" id="close">&times;</span>
-    <h2 id="modal-title"></h2>
+    <div class="modal-head">
+      <h2 id="modal-title"></h2>
+      <span class="close" id="close">&times;</span>
+    </div>
     <div id="modal-body"></div>
   </div>
 </div>
@@ -507,7 +528,14 @@ function openCurrentModal(p) {
   }
   if (!html) html = "<p>No scored results yet.</p>";
   $("modal-body").innerHTML = html;
+  $("modal-body").querySelectorAll(".flip .seemath").forEach((btn) => {
+    btn.addEventListener("click", () => btn.closest(".flip").classList.add("flipped"));
+  });
+  $("modal-body").querySelectorAll(".flip .flipback").forEach((btn) => {
+    btn.addEventListener("click", () => btn.closest(".flip").classList.remove("flipped"));
+  });
   $("modal").style.display = "block";
+  lockScroll();
 }
 
 /* ---------------- New boards: calculated by scoring.js ---------------- */
@@ -517,6 +545,10 @@ function renderNew() {
   const data = NEW_BOARDS[key].filter(p => showGuests || !p.guest);
   const list = $("list");
   list.innerHTML = "";
+  const head = document.createElement("div");
+  head.className = "board-head";
+  head.innerHTML = `<span class="bh-rank">Rank</span><span class="bh-name">${key === "doubles" ? "Pairing" : "Player"}</span><span class="bh-rating">Rating</span>`;
+  list.appendChild(head);
   data.forEach((p, idx) => {
     const displayRank = showGuests ? p.rank : idx + 1;
     let arrow = "NEW", cls = "same";
@@ -578,7 +610,7 @@ function historyWon(r, p, key) {
 }
 function openNewModal(p, key) {
   $("modal-title").textContent = p.name;
-  let html = `<p style="margin-top:0;"><strong>New score: ${fmt(p.score)}</strong> <span class="detail-line">— weighted average of the ${Math.min((p.results || []).length, 10)} newest scored results</span></p>`;
+  let html = `<p style="margin-top:0;"><strong>Rating: ${fmt(p.score)}</strong> <span class="detail-line">— weighted average of the ${Math.min((p.results || []).length, 10)} newest scored results</span></p>`;
   const results = p.results || [];
   const totalW = results.reduce((sum, r) => sum + (r.inWindow === false ? 0 : (r.weight || 0)), 0);
   if (!results.length) html += "<p>No scored results yet.</p>";
@@ -592,18 +624,28 @@ function openNewModal(p, key) {
       </div>`;
       return;
     }
-    html += `<div class="result" style="display:flex; justify-content:space-between; align-items:flex-start; gap:8px;">
-      <div>
-        ${outcome} <strong>${fmtDate(r.date)}</strong> vs ${esc(r.opponent)}<br>
-        ${esc(scoreText)}<br>
-        <span class="detail-line">${detailLines(r, key)}<br>(${fmt(r.points)} × ${Number(r.weight).toFixed(2)}) ÷ ${totalW.toFixed(2)} = ${fmt(r.contribution)}</span>
+    const share = p.score ? Math.round((r.contribution / p.score) * 100) : 0;
+    html += `<div class="flip">
+      <div class="flip-inner">
+        <div class="flip-face flip-front" style="display:flex; justify-content:space-between; align-items:flex-start; gap:8px;">
+          <div>
+            ${outcome} <strong>${fmtDate(r.date)}</strong> vs ${esc(r.opponent)}<br>
+            ${esc(scoreText)}<br>
+            <span class="carry">Carrying weight: ${share}% of this rating</span><br>
+            <button class="seemath" type="button">See math</button>
+          </div>
+          <div style="text-align:right; min-width:42px; font-size:16px; font-weight:700; color:var(--navy);">${fmt(r.contribution)}</div>
+        </div>
+        <div class="flip-face flip-back">
+          <span class="detail-line">${detailLines(r, key)}<br>Weight: (${fmt(r.points)} × ${Number(r.weight).toFixed(2)}) ÷ ${totalW.toFixed(2)} = ${fmt(r.contribution)} of the rating</span><br>
+          <button class="flipback" type="button">\u2190 Back</button>
+        </div>
       </div>
-      <div class="pts" style="text-align:right; min-width:42px; font-size:15px; color:var(--navy);">${fmt(r.contribution)}</div>
     </div>`;
   });
   const hist = historicalFor(p, key);
   if (hist.length) {
-    html += `<h3 class="history-heading">Earlier results — not counted in this score</h3><div class="history-note">Older results shown for history only. They do not change this score.</div>`;
+    html += `<h3 class="history-heading">Earlier results — not counted in this rating</h3><div class="history-note">Older results shown for history only. They do not change this rating.</div>`;
     hist.forEach((r) => {
       const outcome = historyWon(r, p, key) ? '<span class="win">W</span>' : '<span class="loss">L</span>';
       html += `<div class="result">
@@ -614,7 +656,14 @@ function openNewModal(p, key) {
     });
   }
   $("modal-body").innerHTML = html;
+  $("modal-body").querySelectorAll(".flip .seemath").forEach((btn) => {
+    btn.addEventListener("click", () => btn.closest(".flip").classList.add("flipped"));
+  });
+  $("modal-body").querySelectorAll(".flip .flipback").forEach((btn) => {
+    btn.addEventListener("click", () => btn.closest(".flip").classList.remove("flipped"));
+  });
   $("modal").style.display = "block";
+  lockScroll();
 }
 
 /* ---------------- Compare view ---------------- */
@@ -743,7 +792,9 @@ function showMainArea() {
   else if (isHistory) renderHistory();
   else if (!isMath) render();
 }
-function closeModal() { $("modal").style.display = "none"; }
+function lockScroll() { document.documentElement.style.overflow = "hidden"; document.body.style.overflow = "hidden"; }
+function unlockScroll() { document.documentElement.style.overflow = ""; document.body.style.overflow = ""; }
+function closeModal() { $("modal").style.display = "none"; unlockScroll(); }
 
 document.querySelectorAll("[data-view]").forEach(btn => {
   btn.addEventListener("click", () => { viewMode = btn.dataset.view; syncViewButtons(); showMainArea(); });
@@ -788,6 +839,9 @@ $("guests").addEventListener("change", showMainArea);
 $("guests").addEventListener("click", showMainArea);
 $("close").addEventListener("click", closeModal);
 $("modal").addEventListener("click", (e) => { if (e.target.id === "modal") closeModal(); });
+document.addEventListener("touchmove", (e) => {
+  if ($("modal").style.display === "block" && !(e.target.closest && e.target.closest("#modal-body"))) e.preventDefault();
+}, { passive: false });
 $("updated").textContent = LAST_UPDATED;
 syncViewButtons();
 showMainArea();
