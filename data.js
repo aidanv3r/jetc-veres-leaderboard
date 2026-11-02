@@ -3300,7 +3300,7 @@ const HISTORICAL_RESULTS = [
   }
 ];
 
-const LAST_UPDATED = "Preview — results through Oct 31, 2026";
+const LAST_UPDATED = "Last update 11/01 11:28pm";
 
 // Ranks/order from the current published boards. These are used only for
 // movement arrows, deterministic tie-breaks, and the Compare view.

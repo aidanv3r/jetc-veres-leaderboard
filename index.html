@@ -67,6 +67,19 @@ header p { margin: 0; font-size: 12.5px; }
 .detail-line { font-size: 12px; color: var(--muted); }
 .history-heading { margin: 16px 0 6px; padding-top: 12px; border-top: 2px solid var(--border); font-size: 15px; }
 .history-note { color: var(--muted); font-size: 12px; margin-bottom: 6px; }
+.hrow { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 9px 12px; margin-bottom: 8px; }
+.hrow-top { display: flex; gap: 6px; align-items: center; margin-bottom: 3px; }
+.hdate { font-weight: 700; color: var(--navy); font-size: 12.5px; }
+.htag { font-size: 11px; font-weight: 700; padding: 1px 7px; border-radius: 999px; background: #eaeef2; color: #0a2540; }
+.htag.league { background: var(--navy); color: #fff; }
+.htag.spring { background: #fff3cd; color: #664d03; }
+.hfmt { font-size: 11.5px; color: var(--muted); }
+.htext { font-size: 13.5px; }
+.hscore { font-size: 12.5px; color: var(--muted); margin-top: 1px; }
+.hcontrols { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+.hbtn { padding: 7px 10px; border: none; border-radius: 8px; background: #eaeef2; color: #0a2540; font-weight: 600; cursor: pointer; font-size: 12.5px; }
+.hbtn.active { background: var(--navy); color: #fff; }
+#hist-player { padding: 7px 8px; border-radius: 8px; border: 1px solid var(--border); font-size: 12.5px; background: #fff; color: #0a2540; max-width: 100%; }
 /* Unclicked header bubbles: force dark words on a light bubble, even if the viewer app tries to recolor the page. */
 .tab:not(.active), .view-btn:not(.active) { color: #0a2540 !important; -webkit-text-fill-color: #0a2540; }
 </style>
@@ -75,12 +88,13 @@ header p { margin: 0; font-size: 12.5px; }
 <div class="sticky-header">
 <header>
   <h1>JETC / Veres</h1>
-  <p>Broward USTA 18+ 3.5 Night • Leaderboard <span style="opacity:0.7;">v3.0</span></p>
+  <p>Broward USTA 18+ 3.5 Night • Leaderboard <span style="opacity:0.7;">v3.1</span></p>
 </header>
 <div class="tabs">
   <button class="tab active" data-tab="singles">Singles</button>
   <button class="tab" data-tab="doubles">Doubles</button>
   <button class="tab" data-tab="math">Math</button>
+  <button class="tab" data-tab="history">History</button>
 </div>
 <div class="subtabs" id="doubles-subtabs" style="display:none; gap:6px; margin-bottom:0; padding:4px 0;">
   <button class="tab sub active" data-sub="pairings">Pairings</button>
@@ -97,6 +111,7 @@ header p { margin: 0; font-size: 12.5px; }
 </div>
 <div id="list" style="padding:12px 10px 0 10px;"></div>
 <div id="compare" class="compare-wrap" style="display:none;"></div>
+<div id="history" style="display:none; padding:12px 10px 0 10px;"></div>
 
 <div id="math" style="display:none; background:var(--card); border-radius:10px; padding:14px; font-size:13.5px; line-height:1.5; margin:0 10px;">
   <div id="math-main">
@@ -501,7 +516,8 @@ function renderNew() {
   const data = NEW_BOARDS[key].filter(p => showGuests || !p.guest);
   const list = $("list");
   list.innerHTML = "";
-  data.forEach((p) => {
+  data.forEach((p, idx) => {
+    const displayRank = showGuests ? p.rank : idx + 1;
     let arrow = "NEW", cls = "same";
     if (p.previousRank != null) {
       const d = p.previousRank - p.rank;
@@ -514,7 +530,7 @@ function renderNew() {
     const limited = (p.results || []).length < 3 ? ' <span style="font-size:11px;color:#57606a;">· limited data</span>' : "";
     div.innerHTML = `
       <div class="row-header">
-        <span class="rank">${p.rank}</span>
+        <span class="rank">${displayRank}</span>
         <span class="arrow ${cls}">${arrow}</span>
         <span class="name">${esc(p.name)}${limited}</span>
         <span class="score">${fmt(p.score)}</span>
@@ -631,18 +647,98 @@ function renderCompare() {
   </div>`;
 }
 
+
+/* ---------------- Recent Results History (v3.1) ---------------- */
+let histSort = "new";
+let histPlayer = "";
+let histFormat = "all";
+const MONTHS = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+function fmtHistDate(row) {
+  const parts = row.date.split("-");
+  const mon = MONTHS[parseInt(parts[1], 10) - 1];
+  if (parts.length === 2) return mon + " " + parts[0];
+  return mon + " " + parseInt(parts[2], 10);
+}
+function historyData() {
+  const rows = [];
+  for (const m of MATCHES) {
+    const names = m.sides.map(s => s.players.map(pl => pl.name).join(" / "));
+    let score;
+    if (m.completion === "forfeit") score = "Forfeit" + (m.stoppageScore ? " at " + m.stoppageScore.join("-") : "");
+    else {
+      score = m.sets.map(s => s.matchTiebreak ? "1-0" + (s.tiebreak ? " (" + s.tiebreak.join("-") + ")" : "") : s.games.join("-")).join(", ");
+      if (m.completion === "partial-set") score += " (stopped)";
+    }
+    rows.push({
+      date: m.date, sortKey: m.date, seq: m.sequence || 0,
+      tag: m.context === "league" ? "League" : "Practice", tagClass: m.context === "league" ? "league" : "",
+      spring: false, format: m.format,
+      players: m.sides.flatMap(s => s.players.map(pl => pl.name)),
+      text: names[m.winnerSide] + " d. " + names[1 - m.winnerSide], score
+    });
+  }
+  for (const h of HISTORICAL_RESULTS) {
+    rows.push({
+      date: h.date, sortKey: h.datePrecision === "month" ? h.date + "-01" : h.date, seq: -1,
+      tag: "Spring \u00b7 not counted", tagClass: "spring",
+      spring: true, format: h.format,
+      players: (h.participants || []).map(n => HIST_ALIASES[n] || n),
+      text: h.resultText, score: h.score || ""
+    });
+  }
+  return rows;
+}
+const HIST_ALIASES = { "Nicholas Velar": "Nick Velar", "William Kuehne": "Will Kuehne" };
+function renderHistory() {
+  const all = historyData();
+  const players = PLAYERS.map(p => p.name).sort();
+  let rows = all.filter(r => (!histPlayer || r.players.includes(histPlayer)) && (histFormat === "all" || r.format === histFormat));
+  rows.sort((a, b) => histSort === "new"
+    ? (b.sortKey.localeCompare(a.sortKey) || b.seq - a.seq)
+    : (a.sortKey.localeCompare(b.sortKey) || a.seq - b.seq));
+  const wrap = $("history");
+  wrap.innerHTML = `
+    <h2 style="margin:2px 0 10px 0; font-size:17px;">Recent Results History</h2>
+    <div class="hcontrols">
+      <button class="hbtn" id="hist-sort" style="min-width:132px; text-align:center;">${histSort === "new" ? "Newest first \u2193" : "Oldest first \u2191"}</button>
+      <select id="hist-player">
+        <option value="">All players</option>
+        ${players.map(n => `<option value="${esc(n)}" ${n === histPlayer ? "selected" : ""}>${esc(n)}</option>`).join("")}
+      </select>
+    </div>
+    <div class="hcontrols" id="hist-fmt-row">
+      <button class="hbtn ${histFormat === "all" ? "active" : ""}" data-hfmt="all">All</button>
+      <button class="hbtn ${histFormat === "singles" ? "active" : ""}" data-hfmt="singles">Singles</button>
+      <button class="hbtn ${histFormat === "doubles" ? "active" : ""}" data-hfmt="doubles">Doubles</button>
+    </div>
+    <p class="detail-line" style="margin-bottom:10px;">${rows.length} result${rows.length === 1 ? "" : "s"}${histPlayer ? " for " + esc(histPlayer) : ""}. Spring results are shown for history only \u2014 they count for no points.</p>
+    ${rows.map(r => `
+      <div class="hrow">
+        <div class="hrow-top"><span class="hdate">${fmtHistDate(r)}</span><span class="htag ${r.tagClass}">${r.tag}</span><span class="hfmt">${r.format === "singles" ? "Singles" : "Doubles"}</span></div>
+        <div class="htext">${esc(r.text)}</div>
+        ${r.score ? `<div class="hscore">${esc(r.score)}</div>` : ""}
+      </div>`).join("")}
+  `;
+  $("hist-sort").addEventListener("click", () => { histSort = histSort === "new" ? "old" : "new"; renderHistory(); });
+  $("hist-player").addEventListener("change", (e) => { histPlayer = e.target.value; renderHistory(); });
+  wrap.querySelectorAll("[data-hfmt]").forEach(b => b.addEventListener("click", () => { histFormat = b.dataset.hfmt; renderHistory(); }));
+}
+
 /* ---------------- View and tab controls ---------------- */
 function render() { if (viewMode === "new") renderNew(); else renderCurrent(); }
 function syncViewButtons() { document.querySelectorAll("[data-view]").forEach(b => b.classList.toggle("active", b.dataset.view === viewMode)); }
 function showMainArea() {
   const isMath = currentTab === "math";
+  const isHistory = currentTab === "history";
   $("compare").style.display = viewMode === "compare" ? "block" : "none";
-  $("list").style.display = (!isMath && viewMode !== "compare") ? "block" : "none";
+  $("list").style.display = (!isMath && !isHistory && viewMode !== "compare") ? "block" : "none";
   $("math").style.display = (isMath && viewMode !== "compare") ? "block" : "none";
-  $("controls").style.display = isMath ? "none" : "flex";
+  $("history").style.display = isHistory ? "block" : "none";
+  $("controls").style.display = (isMath || isHistory) ? "none" : "flex";
   $("doubles-subtabs").style.display = currentTab === "doubles" ? "flex" : "none";
   $("math-subtabs").style.display = isMath ? "flex" : "none";
   if (viewMode === "compare") renderCompare();
+  else if (isHistory) renderHistory();
   else if (!isMath) render();
 }
 function closeModal() { $("modal").style.display = "none"; }
