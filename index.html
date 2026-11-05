@@ -107,17 +107,23 @@ header p { margin: 0; font-size: 12.5px; }
 <div class="sticky-header">
 <header>
   <h1>JETC / Veres</h1>
-  <p>Broward USTA 18+ 3.5 Night • Leaderboard <span style="opacity:0.7;">v3.3</span></p>
+  <p>Broward USTA 18+ 3.5 Night • Leaderboard <span style="opacity:0.7;">v3.4</span></p>
 </header>
 <div class="tabs">
   <button class="tab active" data-tab="singles">Singles</button>
   <button class="tab" data-tab="doubles">Doubles</button>
   <button class="tab" data-tab="math">Math</button>
   <button class="tab" data-tab="history">History</button>
+  <button class="tab" data-tab="add">Add New Result</button>
+</div>
+<div class="subtabs" id="singles-subtabs" style="display:none; gap:6px; margin-bottom:0; padding:4px 0;">
+  <button class="tab sub active" data-ssub="board">Leaderboard</button>
+  <button class="tab sub" data-ssub="matchups">Matchups</button>
 </div>
 <div class="subtabs" id="doubles-subtabs" style="display:none; gap:6px; margin-bottom:0; padding:4px 0;">
   <button class="tab sub active" data-sub="pairings">Pairings</button>
   <button class="tab sub" data-sub="players">Players</button>
+  <button class="tab sub" data-sub="matchups">Matchups</button>
 </div>
 <div class="subtabs" id="math-subtabs" style="display:none; gap:6px; margin-bottom:0; padding:4px 0;">
   <button class="tab sub active" data-math="main">Singles &amp; Doubles</button>
@@ -131,6 +137,15 @@ header p { margin: 0; font-size: 12.5px; }
 <div id="list" style="padding:12px 10px 0 10px;"></div>
 <div id="compare" class="compare-wrap" style="display:none;"></div>
 <div id="history" style="display:none; padding:12px 10px 0 10px;"></div>
+<div id="matchups" style="display:none; padding:12px 10px 0 10px;"></div>
+<div id="addresult" style="display:none; padding:12px 10px 0 10px;">
+  <div style="background:var(--card); border-radius:10px; padding:18px; text-align:center;">
+    <h2 style="margin-top:0; font-size:17px;">Add a New Result</h2>
+    <p>Results go in through the official form — one form per court for team matches.</p>
+    <p><a href="https://docs.google.com/forms/d/e/1FAIpQLScqmo4BJt7Zx073wWHicn30xun27rlquHc4BZi1nx_eu7M19A/viewform" target="_blank" rel="noopener" style="display:inline-block; background:var(--navy); color:#fff; padding:12px 22px; border-radius:8px; font-weight:600; text-decoration:none;">Open the Add a Result form</a></p>
+    <p style="color:var(--muted); font-size:12.5px;">Every submission is checked and approved by the captain before it counts on these boards.</p>
+  </div>
+</div>
 
 <div id="math" style="display:none; background:var(--card); border-radius:10px; padding:14px; font-size:13.5px; line-height:1.5; margin:0 10px;">
   <div id="math-main">
@@ -401,13 +416,14 @@ const indivDoubles = [
 
 let currentTab = "singles";
 let currentSub = "pairings";
+let currentSinglesSub = "board";
 let viewMode = "new";
 
 const NEW_BOARDS = JETCScoring.calculateBoards({
   matches: MATCHES,
   players: PLAYERS,
   historicalResults: HISTORICAL_RESULTS,
-  asOf: "2026-10-31",
+  asOf: "2026-11-04",
   currentPublishedRanks: CURRENT_PUBLISHED_RANKS,
   currentPublishedOrder: CURRENT_PUBLISHED_ORDER
 });
@@ -775,22 +791,43 @@ function renderHistory() {
   wrap.querySelectorAll("[data-hfmt]").forEach(b => b.addEventListener("click", () => { histFormat = b.dataset.hfmt; renderHistory(); }));
 }
 
+function renderMatchups() {
+  const wrap = $("matchups");
+  const isSingles = currentTab === "singles";
+  const items = (typeof WANTED_MATCHUPS !== "undefined" && WANTED_MATCHUPS[isSingles ? "singles" : "doubles"]) || [];
+  const rows = items.map((m, i) => {
+    const text = isSingles ? `${m[0]} vs ${m[1]}` : `${m[0].join(" / ")} vs ${m[1].join(" / ")}`;
+    return `<div class="hrow"><div class="hrow-top"><span class="hdate">#${i + 1}</span><span class="hfmt">${isSingles ? "Singles" : "Doubles"}</span></div><div class="htext">${esc(text)}</div></div>`;
+  }).join("");
+  wrap.innerHTML = `
+    <h2 style="margin:2px 0 10px 0; font-size:17px;">Curious Matchups — ${isSingles ? "Singles" : "Doubles"}</h2>
+    ${rows || '<p class="detail-line">No matchups listed yet.</p>'}
+  `;
+}
+
 /* ---------------- View and tab controls ---------------- */
 function render() { if (viewMode === "new") renderNew(); else renderCurrent(); }
 function syncViewButtons() { document.querySelectorAll("[data-view]").forEach(b => b.classList.toggle("active", b.dataset.view === viewMode)); }
 function showMainArea() {
   const isMath = currentTab === "math";
   const isHistory = currentTab === "history";
+  const isAdd = currentTab === "add";
+  const isMatchups = (currentTab === "singles" && currentSinglesSub === "matchups") ||
+                     (currentTab === "doubles" && currentSub === "matchups");
   $("compare").style.display = viewMode === "compare" ? "block" : "none";
-  $("list").style.display = (!isMath && !isHistory && viewMode !== "compare") ? "block" : "none";
+  $("list").style.display = (!isMath && !isHistory && !isAdd && !isMatchups && viewMode !== "compare") ? "block" : "none";
   $("math").style.display = (isMath && viewMode !== "compare") ? "block" : "none";
   $("history").style.display = isHistory ? "block" : "none";
-  $("controls").style.display = (isMath || isHistory) ? "none" : "flex";
+  $("matchups").style.display = (isMatchups && viewMode !== "compare") ? "block" : "none";
+  $("addresult").style.display = (isAdd && viewMode !== "compare") ? "block" : "none";
+  $("controls").style.display = (isMath || isHistory || isAdd || isMatchups) ? "none" : "flex";
+  $("singles-subtabs").style.display = currentTab === "singles" ? "flex" : "none";
   $("doubles-subtabs").style.display = currentTab === "doubles" ? "flex" : "none";
   $("math-subtabs").style.display = isMath ? "flex" : "none";
   if (viewMode === "compare") renderCompare();
   else if (isHistory) renderHistory();
-  else if (!isMath) render();
+  else if (isMatchups) renderMatchups();
+  else if (!isMath && !isAdd) render();
 }
 function lockScroll() { document.documentElement.style.overflow = "hidden"; document.body.style.overflow = "hidden"; }
 function unlockScroll() { document.documentElement.style.overflow = ""; document.body.style.overflow = ""; }
@@ -815,12 +852,25 @@ document.querySelectorAll("#doubles-subtabs .tab.sub").forEach(btn => {
     showMainArea();
   });
 });
+document.querySelectorAll("#singles-subtabs .tab.sub").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll("#singles-subtabs .tab.sub").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    currentSinglesSub = btn.dataset.ssub;
+    showMainArea();
+  });
+});
 document.querySelectorAll(".tabs > .tab").forEach(btn => {
   btn.addEventListener("click", () => {
     document.querySelectorAll(".tabs > .tab").forEach(b => b.classList.remove("active"));
     btn.classList.add("active");
     currentTab = btn.dataset.tab;
     if (currentTab === "math" && viewMode === "compare") { viewMode = "current"; syncViewButtons(); }
+    if (currentTab === "singles") {
+      document.querySelectorAll("#singles-subtabs .tab.sub").forEach(b => b.classList.remove("active"));
+      document.querySelector("#singles-subtabs .tab.sub[data-ssub='board']").classList.add("active");
+      currentSinglesSub = "board";
+    }
     if (currentTab === "doubles") {
       document.querySelectorAll("#doubles-subtabs .tab.sub").forEach(b => b.classList.remove("active"));
       document.querySelector("#doubles-subtabs .tab.sub[data-sub='pairings']").classList.add("active");
