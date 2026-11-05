@@ -2201,6 +2201,195 @@ const MATCHES = [
     "sequence": 3,
     "legacyMatchId": null,
     "id": "2026-10-31-sgl-03"
+  },
+  {
+    "id": "2026-11-04-sgl-01",
+    "date": "2026-11-04",
+    "sequence": 1,
+    "format": "singles",
+    "context": "league",
+    "line": 1,
+    "completion": "match",
+    "sides": [
+      {
+        "players": [
+          {
+            "name": "Logan Roschman"
+          }
+        ]
+      },
+      {
+        "players": [
+          {
+            "name": "Julio Cesar Hernandez Marles"
+          }
+        ]
+      }
+    ],
+    "winnerSide": 0,
+    "sets": [
+      {
+        "games": [
+          3,
+          6
+        ]
+      },
+      {
+        "games": [
+          6,
+          4
+        ]
+      },
+      {
+        "games": [
+          1,
+          0
+        ],
+        "matchTiebreak": true
+      }
+    ],
+    "source": "form"
+  },
+  {
+    "id": "2026-11-04-dbl-02",
+    "date": "2026-11-04",
+    "sequence": 2,
+    "format": "doubles",
+    "context": "league",
+    "line": 1,
+    "completion": "match",
+    "sides": [
+      {
+        "players": [
+          {
+            "name": "Nick Velar"
+          },
+          {
+            "name": "Michael Adler"
+          }
+        ]
+      },
+      {
+        "players": [
+          {
+            "name": "Yuhong Wang"
+          },
+          {
+            "name": "Goodwin Chen"
+          }
+        ]
+      }
+    ],
+    "winnerSide": 0,
+    "sets": [
+      {
+        "games": [
+          6,
+          2
+        ]
+      },
+      {
+        "games": [
+          6,
+          2
+        ]
+      }
+    ],
+    "source": "form"
+  },
+  {
+    "id": "2026-11-04-dbl-03",
+    "date": "2026-11-04",
+    "sequence": 3,
+    "format": "doubles",
+    "context": "league",
+    "line": 2,
+    "completion": "match",
+    "sides": [
+      {
+        "players": [
+          {
+            "name": "Will Kuehne"
+          },
+          {
+            "name": "Justin Legido"
+          }
+        ]
+      },
+      {
+        "players": [
+          {
+            "name": "Alfonso Galindo"
+          },
+          {
+            "name": "Emilio Stillo"
+          }
+        ]
+      }
+    ],
+    "winnerSide": 1,
+    "sets": [
+      {
+        "games": [
+          2,
+          6
+        ]
+      },
+      {
+        "games": [
+          6,
+          7
+        ]
+      }
+    ],
+    "source": "form"
+  },
+  {
+    "id": "2026-11-04-dbl-04",
+    "date": "2026-11-04",
+    "sequence": 4,
+    "format": "doubles",
+    "context": "league",
+    "line": 3,
+    "completion": "match",
+    "sides": [
+      {
+        "players": [
+          {
+            "name": "Aidan Veres"
+          },
+          {
+            "name": "Sterling Savill"
+          }
+        ]
+      },
+      {
+        "players": [
+          {
+            "name": "Haifeng Wang"
+          },
+          {
+            "name": "Gerardo Naranjo"
+          }
+        ]
+      }
+    ],
+    "winnerSide": 0,
+    "sets": [
+      {
+        "games": [
+          6,
+          2
+        ]
+      },
+      {
+        "games": [
+          7,
+          5
+        ]
+      }
+    ],
+    "source": "form"
   }
 ];
 
@@ -3315,7 +3504,25 @@ const HISTORICAL_RESULTS = [
   }
 ];
 
-const LAST_UPDATED = "Last update 11/02 12:58am";
+
+// Aidan's "Curious Matchups" lists, in his order of curiosity.
+// Plain data on purpose: reorder, add, or remove entries freely — the
+// Matchups sub-tabs on the Singles and Doubles pages render this as-is.
+const WANTED_MATCHUPS = {
+  "singles": [
+    ["Justin Legido", "Logan Roschman"],
+    ["Carlos Gomez", "Jonathan Jaffe"],
+    ["Kevin Rodengen", "Adam D'Anna"],
+    ["Logan Roschman", "Michael Adler"],
+    ["Jonathan Jaffe", "Adam D'Anna"],
+    ["Jonathan Jaffe", "Kevin Rodengen"],
+    ["Sterling Savill", "Carlos Gomez"]
+  ],
+  "doubles": [
+    [["Sterling Savill", "Alec Bryant"], ["Will Kuehne", "Justin Legido"]]
+  ]
+};
+const LAST_UPDATED = "Last update 11/4 11:55pm";
 
 // Ranks/order from the current published boards. These are used only for
 // movement arrows, deterministic tie-breaks, and the Compare view.
@@ -3434,5 +3641,5 @@ const CURRENT_PUBLISHED_ORDER = {
 };
 
 if (typeof module !== "undefined" && module.exports) {
-  module.exports = { PLAYERS, MATCHES, HISTORICAL_RESULTS, LAST_UPDATED, CURRENT_PUBLISHED_RANKS, CURRENT_PUBLISHED_ORDER };
+  module.exports = { PLAYERS, MATCHES, HISTORICAL_RESULTS, LAST_UPDATED, CURRENT_PUBLISHED_RANKS, CURRENT_PUBLISHED_ORDER, WANTED_MATCHUPS };
 }
