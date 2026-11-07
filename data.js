@@ -2390,6 +2390,250 @@ const MATCHES = [
       }
     ],
     "source": "form"
+  },
+  {
+    "id": "2026-11-07-sgl-01",
+    "date": "2026-11-07",
+    "sequence": 1,
+    "format": "singles",
+    "context": "practice",
+    "completion": "single-set",
+    "sides": [
+      {
+        "players": [
+          {
+            "name": "Aidan Veres"
+          }
+        ]
+      },
+      {
+        "players": [
+          {
+            "name": "Alec Bryant"
+          }
+        ]
+      }
+    ],
+    "winnerSide": 0,
+    "sets": [
+      {
+        "games": [
+          7,
+          6
+        ]
+      }
+    ],
+    "source": "form"
+  },
+  {
+    "id": "2026-11-07-sgl-02",
+    "date": "2026-11-07",
+    "sequence": 2,
+    "format": "singles",
+    "context": "practice",
+    "completion": "partial-set",
+    "sides": [
+      {
+        "players": [
+          {
+            "name": "Kevin Rodengen"
+          }
+        ]
+      },
+      {
+        "players": [
+          {
+            "name": "Juan Gomez"
+          }
+        ]
+      }
+    ],
+    "winnerSide": 0,
+    "sets": [
+      {
+        "games": [
+          4,
+          3
+        ]
+      }
+    ],
+    "source": "form"
+  },
+  {
+    "id": "2026-11-07-sgl-03",
+    "date": "2026-11-07",
+    "sequence": 3,
+    "format": "singles",
+    "context": "practice",
+    "completion": "partial-set",
+    "sides": [
+      {
+        "players": [
+          {
+            "name": "Aidan Veres"
+          }
+        ]
+      },
+      {
+        "players": [
+          {
+            "name": "Will Kuehne"
+          }
+        ]
+      }
+    ],
+    "winnerSide": 0,
+    "sets": [
+      {
+        "games": [
+          4,
+          2
+        ]
+      }
+    ],
+    "source": "form"
+  },
+  {
+    "id": "2026-11-07-sgl-04",
+    "date": "2026-11-07",
+    "sequence": 4,
+    "format": "singles",
+    "context": "practice",
+    "completion": "partial-set",
+    "sides": [
+      {
+        "players": [
+          {
+            "name": "Aidan Veres"
+          }
+        ]
+      },
+      {
+        "players": [
+          {
+            "name": "Kevin Rodengen"
+          }
+        ]
+      }
+    ],
+    "winnerSide": 1,
+    "sets": [
+      {
+        "games": [
+          0,
+          4
+        ]
+      }
+    ],
+    "source": "form"
+  },
+  {
+    "id": "2026-11-07-sgl-05",
+    "date": "2026-11-07",
+    "sequence": 5,
+    "format": "singles",
+    "context": "practice",
+    "completion": "partial-set",
+    "sides": [
+      {
+        "players": [
+          {
+            "name": "Juan Gomez"
+          }
+        ]
+      },
+      {
+        "players": [
+          {
+            "name": "Will Kuehne"
+          }
+        ]
+      }
+    ],
+    "winnerSide": 0,
+    "sets": [
+      {
+        "games": [
+          4,
+          2
+        ]
+      }
+    ],
+    "source": "form"
+  },
+  {
+    "id": "2026-11-07-dbl-01",
+    "date": "2026-11-07",
+    "sequence": 6,
+    "format": "doubles",
+    "context": "practice",
+    "completion": "partial-set",
+    "sides": [
+      {
+        "players": [
+          {
+            "name": "Aidan Veres"
+          },
+          {
+            "name": "Juan Gomez"
+          }
+        ]
+      },
+      {
+        "players": [
+          {
+            "name": "Will Kuehne"
+          },
+          {
+            "name": "Kevin Rodengen"
+          }
+        ]
+      }
+    ],
+    "winnerSide": 0,
+    "sets": [
+      {
+        "games": [
+          4,
+          3
+        ]
+      }
+    ],
+    "source": "form"
+  },
+  {
+    "id": "2026-11-07-sgl-06",
+    "date": "2026-11-07",
+    "sequence": 7,
+    "format": "singles",
+    "context": "practice",
+    "completion": "single-set",
+    "sides": [
+      {
+        "players": [
+          {
+            "name": "Juan Gomez"
+          }
+        ]
+      },
+      {
+        "players": [
+          {
+            "name": "Will Kuehne"
+          }
+        ]
+      }
+    ],
+    "winnerSide": 0,
+    "sets": [
+      {
+        "games": [
+          7,
+          6
+        ]
+      }
+    ],
+    "source": "form"
   }
 ];
 
@@ -3522,7 +3766,7 @@ const WANTED_MATCHUPS = {
     [["Sterling Savill", "Alec Bryant"], ["Will Kuehne", "Justin Legido"]]
   ]
 };
-const LAST_UPDATED = "Last update 11/4 11:55pm";
+const LAST_UPDATED = "Last update 11/7 12:01pm";
 
 // Ranks/order from the current published boards. These are used only for
 // movement arrows, deterministic tie-breaks, and the Compare view.
