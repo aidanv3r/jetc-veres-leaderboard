@@ -2634,6 +2634,182 @@ const MATCHES = [
       }
     ],
     "source": "form"
+  },
+  {
+    "id": "2026-11-09-sgl-01",
+    "date": "2026-11-09",
+    "sequence": 1,
+    "format": "singles",
+    "context": "practice",
+    "completion": "single-set",
+    "sides": [
+      {
+        "players": [
+          {
+            "name": "Alec Bryant"
+          }
+        ]
+      },
+      {
+        "players": [
+          {
+            "name": "Will Kuehne"
+          }
+        ]
+      }
+    ],
+    "winnerSide": 0,
+    "sets": [
+      {
+        "games": [
+          6,
+          1
+        ]
+      }
+    ],
+    "source": "form"
+  },
+  {
+    "id": "2026-11-09-sgl-02",
+    "date": "2026-11-09",
+    "sequence": 2,
+    "format": "singles",
+    "context": "practice",
+    "completion": "single-set",
+    "sides": [
+      {
+        "players": [
+          {
+            "name": "Sterling Savill"
+          }
+        ]
+      },
+      {
+        "players": [
+          {
+            "name": "Parker Long"
+          }
+        ]
+      }
+    ],
+    "winnerSide": 0,
+    "sets": [
+      {
+        "games": [
+          6,
+          1
+        ]
+      }
+    ],
+    "source": "form"
+  },
+  {
+    "id": "2026-11-09-sgl-03",
+    "date": "2026-11-09",
+    "sequence": 3,
+    "format": "singles",
+    "context": "practice",
+    "completion": "partial-set",
+    "sides": [
+      {
+        "players": [
+          {
+            "name": "Will Kuehne"
+          }
+        ]
+      },
+      {
+        "players": [
+          {
+            "name": "Parker Long"
+          }
+        ]
+      }
+    ],
+    "winnerSide": 0,
+    "sets": [
+      {
+        "games": [
+          5,
+          3
+        ]
+      }
+    ],
+    "source": "form"
+  },
+  {
+    "id": "2026-11-09-sgl-04",
+    "date": "2026-11-09",
+    "sequence": 4,
+    "format": "singles",
+    "context": "practice",
+    "completion": "single-set",
+    "sides": [
+      {
+        "players": [
+          {
+            "name": "Sterling Savill"
+          }
+        ]
+      },
+      {
+        "players": [
+          {
+            "name": "Alec Bryant"
+          }
+        ]
+      }
+    ],
+    "winnerSide": 0,
+    "sets": [
+      {
+        "games": [
+          6,
+          0
+        ]
+      }
+    ],
+    "source": "form"
+  },
+  {
+    "id": "2026-11-09-dbl-01",
+    "date": "2026-11-09",
+    "sequence": 5,
+    "format": "doubles",
+    "context": "practice",
+    "completion": "partial-set",
+    "sides": [
+      {
+        "players": [
+          {
+            "name": "Will Kuehne"
+          },
+          {
+            "name": "Alec Bryant"
+          }
+        ]
+      },
+      {
+        "players": [
+          {
+            "name": "Sterling Savill"
+          },
+          {
+            "name": "Parker Long"
+          }
+        ]
+      }
+    ],
+    "winnerSide": 0,
+    "sets": [
+      {
+        "games": [
+          4,
+          3
+        ]
+      }
+    ],
+    "source": "form"
   }
 ];
 
@@ -3766,7 +3942,7 @@ const WANTED_MATCHUPS = {
     [["Sterling Savill", "Alec Bryant"], ["Will Kuehne", "Justin Legido"]]
   ]
 };
-const LAST_UPDATED = "Last update 11/7 12:01pm";
+const LAST_UPDATED = "Last update 11/9 10:12pm";
 
 // Ranks/order from the current published boards. These are used only for
 // movement arrows, deterministic tie-breaks, and the Compare view.
