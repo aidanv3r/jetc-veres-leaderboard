@@ -2810,6 +2810,253 @@ const MATCHES = [
       }
     ],
     "source": "form"
+  },
+  {
+    "id": "2026-11-11-sgl-01",
+    "date": "2026-11-11",
+    "sequence": 1,
+    "format": "singles",
+    "context": "league",
+    "line": 1,
+    "completion": "match",
+    "sides": [
+      {
+        "players": [
+          {
+            "name": "Adam D'Anna"
+          }
+        ]
+      },
+      {
+        "players": [
+          {
+            "name": "Roberto Fiallo"
+          }
+        ]
+      }
+    ],
+    "winnerSide": 0,
+    "sets": [
+      {
+        "games": [
+          6,
+          3
+        ]
+      },
+      {
+        "games": [
+          6,
+          2
+        ]
+      }
+    ],
+    "source": "form"
+  },
+  {
+    "id": "2026-11-11-sgl-02",
+    "date": "2026-11-11",
+    "sequence": 2,
+    "format": "singles",
+    "context": "league",
+    "line": 2,
+    "completion": "match",
+    "sides": [
+      {
+        "players": [
+          {
+            "name": "Michael Adler"
+          }
+        ]
+      },
+      {
+        "players": [
+          {
+            "name": "Don van Splunteren"
+          }
+        ]
+      }
+    ],
+    "winnerSide": 0,
+    "sets": [
+      {
+        "games": [
+          6,
+          0
+        ]
+      },
+      {
+        "games": [
+          6,
+          4
+        ]
+      }
+    ],
+    "source": "form"
+  },
+  {
+    "id": "2026-11-11-dbl-01",
+    "date": "2026-11-11",
+    "sequence": 3,
+    "format": "doubles",
+    "context": "league",
+    "line": 1,
+    "completion": "match",
+    "sides": [
+      {
+        "players": [
+          {
+            "name": "Logan Roschman"
+          },
+          {
+            "name": "Nick Velar"
+          }
+        ]
+      },
+      {
+        "players": [
+          {
+            "name": "Pedro Mangiamarchi"
+          },
+          {
+            "name": "Jose Ignacio Vega"
+          }
+        ]
+      }
+    ],
+    "winnerSide": 1,
+    "sets": [
+      {
+        "games": [
+          7,
+          6
+        ]
+      },
+      {
+        "games": [
+          5,
+          7
+        ]
+      },
+      {
+        "games": [
+          0,
+          1
+        ],
+        "matchTiebreak": true
+      }
+    ],
+    "notes": "Match tiebreak 6-10.",
+    "source": "form"
+  },
+  {
+    "id": "2026-11-11-dbl-02",
+    "date": "2026-11-11",
+    "sequence": 4,
+    "format": "doubles",
+    "context": "league",
+    "line": 2,
+    "completion": "match",
+    "sides": [
+      {
+        "players": [
+          {
+            "name": "Aidan Veres"
+          },
+          {
+            "name": "Alec Bryant"
+          }
+        ]
+      },
+      {
+        "players": [
+          {
+            "name": "Ivan Carrero"
+          },
+          {
+            "name": "Diego Rodriguez"
+          }
+        ]
+      }
+    ],
+    "winnerSide": 0,
+    "sets": [
+      {
+        "games": [
+          3,
+          6
+        ]
+      },
+      {
+        "games": [
+          6,
+          1
+        ]
+      },
+      {
+        "games": [
+          1,
+          0
+        ],
+        "matchTiebreak": true
+      }
+    ],
+    "notes": "Match tiebreak 10-5.",
+    "source": "form"
+  },
+  {
+    "id": "2026-11-11-dbl-03",
+    "date": "2026-11-11",
+    "sequence": 5,
+    "format": "doubles",
+    "context": "league",
+    "line": 3,
+    "completion": "match",
+    "sides": [
+      {
+        "players": [
+          {
+            "name": "Kevin Rodengen"
+          },
+          {
+            "name": "Juan Gomez"
+          }
+        ]
+      },
+      {
+        "players": [
+          {
+            "name": "Pedro El Khaouli"
+          },
+          {
+            "name": "Cruz Rotundo"
+          }
+        ]
+      }
+    ],
+    "winnerSide": 0,
+    "sets": [
+      {
+        "games": [
+          3,
+          6
+        ]
+      },
+      {
+        "games": [
+          6,
+          2
+        ]
+      },
+      {
+        "games": [
+          1,
+          0
+        ],
+        "matchTiebreak": true
+      }
+    ],
+    "notes": "Match tiebreak 10-6.",
+    "source": "form"
   }
 ];
 
@@ -3942,7 +4189,7 @@ const WANTED_MATCHUPS = {
     [["Sterling Savill", "Alec Bryant"], ["Will Kuehne", "Justin Legido"]]
   ]
 };
-const LAST_UPDATED = "Last update 11/9 10:12pm";
+const LAST_UPDATED = "Last update 11/11 10:38pm";
 
 // Ranks/order from the current published boards. These are used only for
 // movement arrows, deterministic tie-breaks, and the Compare view.
