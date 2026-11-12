@@ -107,7 +107,7 @@ header p { margin: 0; font-size: 12.5px; }
 <div class="sticky-header">
 <header>
   <h1>JETC / Veres</h1>
-  <p>Broward USTA 18+ 3.5 Night • Leaderboard <span style="opacity:0.7;">v3.4</span></p>
+  <p>Broward USTA 18+ 3.5 Night • Leaderboard <span style="opacity:0.7;">v3.5</span></p>
 </header>
 <div class="tabs">
   <button class="tab active" data-tab="singles">Singles</button>
@@ -172,7 +172,7 @@ header p { margin: 0; font-size: 12.5px; }
     </ul>
     <p><strong>Partial sets</strong> are classified by the games reached: 5-2 is decisive; 5-3 or 4-3 is competitive. If a practice session ends with the sets split, <strong>each set is scored as its own single-set result</strong>.</p>
     <p><strong>Forfeits</strong>: a voluntary forfeit (quitting) is a decisive win/loss for the format in progress — 15/5 for a set, 16/4 for a match — no matter what the score was when play stopped. An injury forfeit keeps the score at stoppage, and that score is classified by the normal rules.</p>
-    <p><strong>League multiplier</strong>: every league result is multiplied by <strong>1.5</strong> after base points are assigned. Practice results use the base value with no league multiplier.</p>
+    <p><strong>League multiplier</strong>: every league result is multiplied by <strong>1.25</strong> after base points are assigned. Practice results use the base value with no league multiplier.</p>
     <p><strong>Line multiplier</strong> (league only): a league result is also multiplied by the line actually played — <strong>#1 line ×1.10, #2 line ×1.00, #3 doubles ×0.90</strong> — for both sides, win or lose, so playing a higher line earns more for a win and keeps more points in a loss. "Actually played" means the line of the opponents faced, which is the player's own line except when courts are switched. Practice results have no lines and no line multiplier.</p>
     <p><strong>Drills are not results and are never counted.</strong></p>
     <h3 style="font-size:15px; margin-bottom:6px;">2. Recency weighting (most recent 10 only)</h3>
@@ -505,14 +505,14 @@ function openCurrentModal(p) {
   recent.forEach((r, i) => {
     const w = weights[i] || 0;
     const isLeague = r.t === "league";
-    const base = isLeague ? Math.round(r.p / 1.5) : r.p;
+    const base = isLeague ? Math.round(r.p / 1.25) : r.p;
     const applied = r.p;
     const contrib = totalW > 0 ? (applied * w) / totalW : 0;
     sumContrib += contrib;
     const contribDisplay = contrib.toFixed(2);
     const outcome = r.win ? '<span class="win">W</span>' : '<span class="loss">L</span>';
     const ptsDisplay = isLeague
-      ? `<span class="pts">${base} pts</span> <span style="color:#57606a;font-size:11px;">×1.5 = ${applied}</span>`
+      ? `<span class="pts">${base} pts</span> <span style="color:#57606a;font-size:11px;">×1.25 = ${applied}</span>`
       : `<span class="pts">${base} pts</span>`;
     let extra = "";
     if (!isLeague) extra = `<br><span style="font-size:11px;color:#57606a;">0.15 opponent strength applied → ${applied} pts credited</span>`;
@@ -594,7 +594,7 @@ function detailLines(r, key) {
   const d = r.detail || {};
   const lines = [];
   lines.push(`${esc(d.category || "Result")} — base ${fmt(d.base)} pts`);
-  if (d.leagueMultiplier) lines.push(`League multiplier: ×1.5`);
+  if (d.leagueMultiplier) lines.push(`League multiplier: ×1.25`);
   if (d.line) lines.push(`Line played: #${d.line} — line multiplier: ×${Number(d.lineMultiplier).toFixed(2)}`);
   if (d.opponentMultiplier) lines.push(`Opponent adjustment: ×${Number(d.opponentMultiplier).toFixed(3)}`);
   if (key === "indivDoubles") {

@@ -189,11 +189,11 @@
           let detail;
           if (match.context === "league") {
             const lm = lineMultiplier(match);
-            points = base * 1.5 * lm;
+            points = base * 1.25 * lm;
             detail = {
               base,
               category: cls.label,
-              leagueMultiplier: 1.5,
+              leagueMultiplier: 1.25,
               line: match.line != null ? match.line : null,
               lineMultiplier: lm,
             };
@@ -238,11 +238,11 @@
           let detail;
           if (match.context === "league") {
             const lm = lineMultiplier(match);
-            points = base * 1.5 * lm;
+            points = base * 1.25 * lm;
             detail = {
               base,
               category: cls.label,
-              leagueMultiplier: 1.5,
+              leagueMultiplier: 1.25,
               line: match.line != null ? match.line : null,
               lineMultiplier: lm,
             };

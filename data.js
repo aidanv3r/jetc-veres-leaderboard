@@ -4189,7 +4189,7 @@ const WANTED_MATCHUPS = {
     [["Sterling Savill", "Alec Bryant"], ["Will Kuehne", "Justin Legido"]]
   ]
 };
-const LAST_UPDATED = "Last update 11/11 10:38pm";
+const LAST_UPDATED = "Last update 11/11 10:59pm";
 
 // Ranks/order from the current published boards. These are used only for
 // movement arrows, deterministic tie-breaks, and the Compare view.
