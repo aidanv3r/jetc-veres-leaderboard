@@ -4183,13 +4183,15 @@ const WANTED_MATCHUPS = {
     ["Logan Roschman", "Michael Adler"],
     ["Jonathan Jaffe", "Adam D'Anna"],
     ["Jonathan Jaffe", "Kevin Rodengen"],
-    ["Sterling Savill", "Carlos Gomez"]
+    ["Sterling Savill", "Carlos Gomez"],
+    ["Sterling Savill", "Adam D'Anna"]
   ],
   "doubles": [
-    [["Sterling Savill", "Alec Bryant"], ["Will Kuehne", "Justin Legido"]]
+    [["Sterling Savill", "Alec Bryant"], ["Will Kuehne", "Justin Legido"]],
+    [["Carlos Gomez", "Juan Gomez"], ["Logan Roschman", "Jonathan Jaffe"]]
   ]
 };
-const LAST_UPDATED = "Last update 11/11 10:59pm";
+const LAST_UPDATED = "Last update 11/11 11:00pm";
 
 // Ranks/order from the current published boards. These are used only for
 // movement arrows, deterministic tie-breaks, and the Compare view.
