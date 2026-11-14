@@ -3057,6 +3057,194 @@ const MATCHES = [
     ],
     "notes": "Match tiebreak 10-6.",
     "source": "form"
+  },
+  {
+    "id": "2026-11-10-sgl-01",
+    "date": "2026-11-10",
+    "sequence": 1,
+    "format": "singles",
+    "context": "practice",
+    "completion": "partial-set",
+    "sides": [
+      {
+        "players": [
+          {
+            "name": "Kevin Rodengen"
+          }
+        ]
+      },
+      {
+        "players": [
+          {
+            "name": "Adam D'Anna"
+          }
+        ]
+      }
+    ],
+    "winnerSide": 0,
+    "sets": [
+      {
+        "games": [
+          4,
+          2
+        ]
+      }
+    ],
+    "source": "form"
+  },
+  {
+    "id": "2026-11-10-sgl-02",
+    "date": "2026-11-10",
+    "sequence": 2,
+    "format": "singles",
+    "context": "practice",
+    "completion": "partial-set",
+    "sides": [
+      {
+        "players": [
+          {
+            "name": "Adam D'Anna"
+          }
+        ]
+      },
+      {
+        "players": [
+          {
+            "name": "Kevin Rodengen"
+          }
+        ]
+      }
+    ],
+    "winnerSide": 0,
+    "sets": [
+      {
+        "games": [
+          5,
+          4
+        ]
+      }
+    ],
+    "source": "form"
+  },
+  {
+    "id": "2026-11-14-sgl-01",
+    "date": "2026-11-14",
+    "sequence": 1,
+    "format": "singles",
+    "context": "practice",
+    "completion": "match",
+    "sides": [
+      {
+        "players": [
+          {
+            "name": "Patrick Rubenstein"
+          }
+        ]
+      },
+      {
+        "players": [
+          {
+            "name": "Juan Gomez"
+          }
+        ]
+      }
+    ],
+    "winnerSide": 0,
+    "sets": [
+      {
+        "games": [
+          6,
+          4
+        ]
+      },
+      {
+        "games": [
+          6,
+          0
+        ]
+      }
+    ],
+    "source": "form"
+  },
+  {
+    "id": "2026-11-14-sgl-02",
+    "date": "2026-11-14",
+    "sequence": 2,
+    "format": "singles",
+    "context": "practice",
+    "completion": "match",
+    "sides": [
+      {
+        "players": [
+          {
+            "name": "Justin Legido"
+          }
+        ]
+      },
+      {
+        "players": [
+          {
+            "name": "Alec Bryant"
+          }
+        ]
+      }
+    ],
+    "winnerSide": 0,
+    "sets": [
+      {
+        "games": [
+          6,
+          3
+        ]
+      },
+      {
+        "games": [
+          6,
+          3
+        ]
+      }
+    ],
+    "source": "form"
+  },
+  {
+    "id": "2026-11-14-sgl-03",
+    "date": "2026-11-14",
+    "sequence": 3,
+    "format": "singles",
+    "context": "practice",
+    "completion": "match",
+    "sides": [
+      {
+        "players": [
+          {
+            "name": "Carlos Gomez"
+          }
+        ]
+      },
+      {
+        "players": [
+          {
+            "name": "Kevin Rodengen"
+          }
+        ]
+      }
+    ],
+    "winnerSide": 0,
+    "sets": [
+      {
+        "games": [
+          6,
+          3
+        ]
+      },
+      {
+        "games": [
+          6,
+          3
+        ]
+      }
+    ],
+    "source": "form"
   }
 ];
 
@@ -4191,7 +4379,7 @@ const WANTED_MATCHUPS = {
     [["Carlos Gomez", "Juan Gomez"], ["Logan Roschman", "Jonathan Jaffe"]]
   ]
 };
-const LAST_UPDATED = "Last update 11/11 11:00pm";
+const LAST_UPDATED = "Last update 11/14 1:25pm";
 
 // Ranks/order from the current published boards. These are used only for
 // movement arrows, deterministic tie-breaks, and the Compare view.
