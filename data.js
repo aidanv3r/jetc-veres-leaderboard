@@ -3365,6 +3365,148 @@ const MATCHES = [
       }
     ],
     "source": "form"
+  },
+  {
+    "id": "2026-11-16-sgl-01",
+    "date": "2026-11-16",
+    "sequence": 4,
+    "format": "singles",
+    "context": "practice",
+    "completion": "partial-set",
+    "sides": [
+      {
+        "players": [
+          {
+            "name": "Carlos Gomez"
+          }
+        ]
+      },
+      {
+        "players": [
+          {
+            "name": "Will Kuehne"
+          }
+        ]
+      }
+    ],
+    "winnerSide": 0,
+    "sets": [
+      {
+        "games": [
+          4,
+          0
+        ]
+      }
+    ],
+    "source": "form"
+  },
+  {
+    "id": "2026-11-16-dbl-04",
+    "date": "2026-11-16",
+    "sequence": 5,
+    "format": "doubles",
+    "context": "practice",
+    "completion": "single-set",
+    "sides": [
+      {
+        "players": [
+          {
+            "name": "Sterling Savill"
+          },
+          {
+            "name": "Will Kuehne"
+          }
+        ]
+      },
+      {
+        "players": [
+          {
+            "name": "Carlos Gomez"
+          },
+          {
+            "name": "Juan Gomez"
+          }
+        ]
+      }
+    ],
+    "winnerSide": 0,
+    "sets": [
+      {
+        "games": [
+          7,
+          5
+        ]
+      }
+    ],
+    "source": "form"
+  },
+  {
+    "id": "2026-11-16-sgl-02",
+    "date": "2026-11-16",
+    "sequence": 6,
+    "format": "singles",
+    "context": "practice",
+    "completion": "single-set",
+    "sides": [
+      {
+        "players": [
+          {
+            "name": "Will Kuehne"
+          }
+        ]
+      },
+      {
+        "players": [
+          {
+            "name": "Juan Gomez"
+          }
+        ]
+      }
+    ],
+    "winnerSide": 0,
+    "sets": [
+      {
+        "games": [
+          6,
+          3
+        ]
+      }
+    ],
+    "source": "form"
+  },
+  {
+    "id": "2026-11-16-sgl-03",
+    "date": "2026-11-16",
+    "sequence": 7,
+    "format": "singles",
+    "context": "practice",
+    "completion": "single-set",
+    "sides": [
+      {
+        "players": [
+          {
+            "name": "Sterling Savill"
+          }
+        ]
+      },
+      {
+        "players": [
+          {
+            "name": "Carlos Gomez"
+          }
+        ]
+      }
+    ],
+    "winnerSide": 0,
+    "sets": [
+      {
+        "games": [
+          6,
+          4
+        ]
+      }
+    ],
+    "source": "form"
   }
 ];
 
@@ -4499,7 +4641,7 @@ const WANTED_MATCHUPS = {
     [["Carlos Gomez", "Juan Gomez"], ["Logan Roschman", "Jonathan Jaffe"]]
   ]
 };
-const LAST_UPDATED = "Last update 11/16 10:26pm";
+const LAST_UPDATED = "Last update 11/17 8:41am";
 
 // Ranks/order from the current published boards. These are used only for
 // movement arrows, deterministic tie-breaks, and the Compare view.
