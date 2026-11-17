@@ -3245,6 +3245,126 @@ const MATCHES = [
       }
     ],
     "source": "form"
+  },
+  {
+    "id": "2026-11-16-dbl-01",
+    "date": "2026-11-16",
+    "sequence": 1,
+    "format": "doubles",
+    "context": "practice",
+    "completion": "single-set",
+    "sides": [
+      {
+        "players": [
+          {
+            "name": "Justin Legido"
+          },
+          {
+            "name": "Parker Long"
+          }
+        ]
+      },
+      {
+        "players": [
+          {
+            "name": "Patrick Rubenstein"
+          },
+          {
+            "name": "Aidan Veres"
+          }
+        ]
+      }
+    ],
+    "winnerSide": 0,
+    "sets": [
+      {
+        "games": [
+          6,
+          3
+        ]
+      }
+    ],
+    "source": "form"
+  },
+  {
+    "id": "2026-11-16-dbl-02",
+    "date": "2026-11-16",
+    "sequence": 2,
+    "format": "doubles",
+    "context": "practice",
+    "completion": "single-set",
+    "sides": [
+      {
+        "players": [
+          {
+            "name": "Justin Legido"
+          },
+          {
+            "name": "Patrick Rubenstein"
+          }
+        ]
+      },
+      {
+        "players": [
+          {
+            "name": "Parker Long"
+          },
+          {
+            "name": "Aidan Veres"
+          }
+        ]
+      }
+    ],
+    "winnerSide": 0,
+    "sets": [
+      {
+        "games": [
+          6,
+          3
+        ]
+      }
+    ],
+    "source": "form"
+  },
+  {
+    "id": "2026-11-16-dbl-03",
+    "date": "2026-11-16",
+    "sequence": 3,
+    "format": "doubles",
+    "context": "practice",
+    "completion": "single-set",
+    "sides": [
+      {
+        "players": [
+          {
+            "name": "Justin Legido"
+          },
+          {
+            "name": "Aidan Veres"
+          }
+        ]
+      },
+      {
+        "players": [
+          {
+            "name": "Parker Long"
+          },
+          {
+            "name": "Patrick Rubenstein"
+          }
+        ]
+      }
+    ],
+    "winnerSide": 0,
+    "sets": [
+      {
+        "games": [
+          6,
+          3
+        ]
+      }
+    ],
+    "source": "form"
   }
 ];
 
@@ -4379,7 +4499,7 @@ const WANTED_MATCHUPS = {
     [["Carlos Gomez", "Juan Gomez"], ["Logan Roschman", "Jonathan Jaffe"]]
   ]
 };
-const LAST_UPDATED = "Last update 11/14 1:25pm";
+const LAST_UPDATED = "Last update 11/16 10:26pm";
 
 // Ranks/order from the current published boards. These are used only for
 // movement arrows, deterministic tie-breaks, and the Compare view.
