@@ -3507,6 +3507,148 @@ const MATCHES = [
       }
     ],
     "source": "form"
+  },
+  {
+    "id": "2026-11-18-sgl-01",
+    "date": "2026-11-18",
+    "sequence": 1,
+    "format": "singles",
+    "context": "practice",
+    "completion": "single-set",
+    "sides": [
+      {
+        "players": [
+          {
+            "name": "Will Kuehne"
+          }
+        ]
+      },
+      {
+        "players": [
+          {
+            "name": "Aidan Veres"
+          }
+        ]
+      }
+    ],
+    "winnerSide": 0,
+    "sets": [
+      {
+        "games": [
+          6,
+          2
+        ]
+      }
+    ],
+    "source": "form"
+  },
+  {
+    "id": "2026-11-18-sgl-02",
+    "date": "2026-11-18",
+    "sequence": 2,
+    "format": "singles",
+    "context": "practice",
+    "completion": "single-set",
+    "sides": [
+      {
+        "players": [
+          {
+            "name": "Sterling Savill"
+          }
+        ]
+      },
+      {
+        "players": [
+          {
+            "name": "Justin Legido"
+          }
+        ]
+      }
+    ],
+    "winnerSide": 0,
+    "sets": [
+      {
+        "games": [
+          6,
+          3
+        ]
+      }
+    ],
+    "source": "form"
+  },
+  {
+    "id": "2026-11-18-sgl-03",
+    "date": "2026-11-18",
+    "sequence": 3,
+    "format": "singles",
+    "context": "practice",
+    "completion": "partial-set",
+    "sides": [
+      {
+        "players": [
+          {
+            "name": "Aidan Veres"
+          }
+        ]
+      },
+      {
+        "players": [
+          {
+            "name": "Will Kuehne"
+          }
+        ]
+      }
+    ],
+    "winnerSide": 0,
+    "sets": [
+      {
+        "games": [
+          5,
+          3
+        ]
+      }
+    ],
+    "source": "form"
+  },
+  {
+    "id": "2026-11-18-dbl-01",
+    "date": "2026-11-18",
+    "sequence": 4,
+    "format": "doubles",
+    "context": "practice",
+    "completion": "single-set",
+    "sides": [
+      {
+        "players": [
+          {
+            "name": "Justin Legido"
+          },
+          {
+            "name": "Aidan Veres"
+          }
+        ]
+      },
+      {
+        "players": [
+          {
+            "name": "Will Kuehne"
+          },
+          {
+            "name": "Sterling Savill"
+          }
+        ]
+      }
+    ],
+    "winnerSide": 0,
+    "sets": [
+      {
+        "games": [
+          6,
+          4
+        ]
+      }
+    ],
+    "source": "form"
   }
 ];
 
@@ -4641,7 +4783,7 @@ const WANTED_MATCHUPS = {
     [["Carlos Gomez", "Juan Gomez"], ["Logan Roschman", "Jonathan Jaffe"]]
   ]
 };
-const LAST_UPDATED = "Last update 11/17 8:41am";
+const LAST_UPDATED = "Last update 11/18 9:05pm";
 
 // Ranks/order from the current published boards. These are used only for
 // movement arrows, deterministic tie-breaks, and the Compare view.
