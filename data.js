@@ -3649,6 +3649,53 @@ const MATCHES = [
       }
     ],
     "source": "form"
+  },
+  {
+    "id": "2026-11-22-sgl-01",
+    "date": "2026-11-22",
+    "sequence": 1,
+    "format": "singles",
+    "context": "practice",
+    "completion": "match",
+    "sides": [
+      {
+        "players": [
+          {
+            "name": "Carlos Gomez"
+          }
+        ]
+      },
+      {
+        "players": [
+          {
+            "name": "Sterling Savill"
+          }
+        ]
+      }
+    ],
+    "winnerSide": 0,
+    "sets": [
+      {
+        "games": [
+          6,
+          2
+        ]
+      },
+      {
+        "games": [
+          6,
+          2
+        ]
+      },
+      {
+        "games": [
+          6,
+          0
+        ]
+      }
+    ],
+    "source": "form",
+    "notes": "Third set was a full set played in full, not a match tiebreak."
   }
 ];
 
@@ -4783,7 +4830,7 @@ const WANTED_MATCHUPS = {
     [["Carlos Gomez", "Juan Gomez"], ["Logan Roschman", "Jonathan Jaffe"]]
   ]
 };
-const LAST_UPDATED = "Last update 11/18 9:05pm";
+const LAST_UPDATED = "Last update 11/22 12:41pm";
 
 // Ranks/order from the current published boards. These are used only for
 // movement arrows, deterministic tie-breaks, and the Compare view.
