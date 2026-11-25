@@ -3696,6 +3696,243 @@ const MATCHES = [
     ],
     "source": "form",
     "notes": "Third set was a full set played in full, not a match tiebreak."
+  },
+  {
+    "id": "2026-11-24-sgl-01",
+    "date": "2026-11-24",
+    "sequence": 1,
+    "format": "singles",
+    "context": "league",
+    "line": 1,
+    "completion": "match",
+    "sides": [
+      {
+        "players": [
+          {
+            "name": "Adam D'Anna"
+          }
+        ]
+      },
+      {
+        "players": [
+          {
+            "name": "Manny Ramirez"
+          }
+        ]
+      }
+    ],
+    "winnerSide": 0,
+    "sets": [
+      {
+        "games": [
+          6,
+          4
+        ]
+      },
+      {
+        "games": [
+          2,
+          6
+        ]
+      },
+      {
+        "games": [
+          1,
+          0
+        ],
+        "matchTiebreak": true
+      }
+    ],
+    "source": "form"
+  },
+  {
+    "id": "2026-11-24-sgl-02",
+    "date": "2026-11-24",
+    "sequence": 2,
+    "format": "singles",
+    "context": "league",
+    "line": 2,
+    "completion": "match",
+    "sides": [
+      {
+        "players": [
+          {
+            "name": "Carlos Gomez"
+          }
+        ]
+      },
+      {
+        "players": [
+          {
+            "name": "Jason F"
+          }
+        ]
+      }
+    ],
+    "winnerSide": 0,
+    "sets": [
+      {
+        "games": [
+          4,
+          6
+        ]
+      },
+      {
+        "games": [
+          6,
+          1
+        ]
+      },
+      {
+        "games": [
+          1,
+          0
+        ],
+        "matchTiebreak": true
+      }
+    ],
+    "source": "form"
+  },
+  {
+    "id": "2026-11-24-dbl-01",
+    "date": "2026-11-24",
+    "sequence": 3,
+    "format": "doubles",
+    "context": "league",
+    "line": 1,
+    "completion": "match",
+    "sides": [
+      {
+        "players": [
+          {
+            "name": "Nick Velar"
+          },
+          {
+            "name": "Michael Adler"
+          }
+        ]
+      },
+      {
+        "players": [
+          {
+            "name": "Ulysse"
+          },
+          {
+            "name": "Mike"
+          }
+        ]
+      }
+    ],
+    "winnerSide": 1,
+    "sets": [
+      {
+        "games": [
+          3,
+          6
+        ]
+      },
+      {
+        "games": [
+          2,
+          6
+        ]
+      }
+    ],
+    "source": "form"
+  },
+  {
+    "id": "2026-11-24-dbl-02",
+    "date": "2026-11-24",
+    "sequence": 4,
+    "format": "doubles",
+    "context": "league",
+    "line": 2,
+    "completion": "match",
+    "sides": [
+      {
+        "players": [
+          {
+            "name": "Alec Bryant"
+          },
+          {
+            "name": "Justin Legido"
+          }
+        ]
+      },
+      {
+        "players": [
+          {
+            "name": "Brooks"
+          },
+          {
+            "name": "Patrick"
+          }
+        ]
+      }
+    ],
+    "winnerSide": 1,
+    "sets": [
+      {
+        "games": [
+          2,
+          6
+        ]
+      },
+      {
+        "games": [
+          3,
+          6
+        ]
+      }
+    ],
+    "source": "form"
+  },
+  {
+    "id": "2026-11-24-dbl-03",
+    "date": "2026-11-24",
+    "sequence": 5,
+    "format": "doubles",
+    "context": "league",
+    "line": 3,
+    "completion": "match",
+    "sides": [
+      {
+        "players": [
+          {
+            "name": "Aidan Veres"
+          },
+          {
+            "name": "Sterling Savill"
+          }
+        ]
+      },
+      {
+        "players": [
+          {
+            "name": "Jason J"
+          },
+          {
+            "name": "Kevin"
+          }
+        ]
+      }
+    ],
+    "winnerSide": 0,
+    "sets": [
+      {
+        "games": [
+          7,
+          5
+        ]
+      },
+      {
+        "games": [
+          6,
+          3
+        ]
+      }
+    ],
+    "source": "form"
   }
 ];
 
@@ -4830,7 +5067,7 @@ const WANTED_MATCHUPS = {
     [["Carlos Gomez", "Juan Gomez"], ["Logan Roschman", "Jonathan Jaffe"]]
   ]
 };
-const LAST_UPDATED = "Last update 11/22 12:41pm";
+const LAST_UPDATED = "Last update 11/24 9:52pm";
 
 // Ranks/order from the current published boards. These are used only for
 // movement arrows, deterministic tie-breaks, and the Compare view.
